@@ -1,0 +1,48 @@
+/* Perennial Fallout v1.7.1 — deterministic iOS Safari image framing.
+   Kept separate from v1.7 so no desktop or player regressions are introduced. */
+@media (max-width:760px) {
+  :root { --mobile-art-height:60svh; }
+  .hero-art, .hero-shadow, .hero-smoke { height:var(--mobile-art-height) !important; }
+  .hero-inner { padding-top:var(--mobile-art-height) !important; }
+  .hero-art { overflow:hidden; background:#080609; }
+  /* Faint spill from the same crop eliminates a visible rectangular edge. */
+  .hero-art::before {
+    background:url('/assets/images/hero-mobile-v171.webp') center 45% / cover no-repeat !important;
+    opacity:.14 !important;
+    filter:blur(20px) brightness(.54) !important;
+  }
+  /* A bounded photo stage is more reliable than aspect-ratio containment in Safari.
+     The image fills the stage, preserving the drummer and matching the 60/40 split. */
+  .hero-art picture {
+    position:absolute !important;
+    top:clamp(108px,14svh,128px) !important;
+    right:0 !important;bottom:0 !important;left:0 !important;
+    display:block !important;
+    width:100% !important;
+    height:auto !important;
+    overflow:hidden !important;
+    background:transparent !important;
+  }
+  .hero-art picture img {
+    display:block !important;
+    width:100% !important; height:100% !important;
+    max-width:none !important;
+    object-fit:cover !important;
+    object-position:50% 26% !important;
+    transform:none !important;
+    filter:brightness(1.045) saturate(.98) !important;
+  }
+  .hero-art::after {
+    background:linear-gradient(to bottom,
+      #050507 0%, rgba(5,5,7,.86) 8%, rgba(5,5,7,.34) 17%,
+      transparent 27%, transparent 75%, rgba(11,11,13,.18) 85%,
+      #0b0b0d 100%) !important;
+  }
+  .hero-shadow {
+    background:linear-gradient(to bottom,rgba(0,0,0,.20),transparent 30%,
+      transparent 76%,#0b0b0d 100%) !important;
+  }
+}
+@media (max-width:360px) {
+  .hero-art picture {top:clamp(104px,14svh,120px) !important;}
+}

@@ -1,6 +1,6 @@
 # Perennial Fallout — Website (Astro + TypeScript)
 
-This repository contains the band's **homepage** source code. It uses Astro 7, TypeScript, custom CSS, and a static production build for Cloudflare Pages. This is **v1.7**, preserving the v1.6 design and mobile 60/40 hero split with improved iPhone hero framing, reliable music seeking, and subtler hero grain. No EPK page is included.
+This repository contains the band's **homepage** source code. It uses Astro 7, TypeScript, custom CSS, and a static production build for Cloudflare Pages. This is **v1.7.1**, preserving the v1.6 design and mobile 60/40 hero split with a dedicated, cropped mobile hero image, reliable music seeking, and subtler hero grain. No EPK page is included.
 
 ## Before publishing
 
@@ -74,3 +74,15 @@ Only required source files, assets, project configuration, lockfile and document
 ## Future integrations
 
 Sanity CMS, Stripe, Cloudflare R2/Workers and a newsletter provider are **not configured**. The homepage currently uses static data and placeholders for these integrations.
+
+## Confirm the live v1.7.1 deployment (important)
+
+The GitHub repository inspected during this update still showed `package.json` version `1.6.0` and did **not** include `src/styles/v1.7.css`. This indicates the existing live site may not have received the previous v1.7 update. The ZIP alone does not update Cloudflare.
+
+1. Copy **all contents** of this package into the same local folder that GitHub Desktop uses for the Cloudflare-connected repository, preserving the `.git` folder.
+2. In GitHub Desktop, verify that `package.json` now contains `"version": "1.7.1"` and there are new `src/styles/v1.7.css` and `src/styles/v1.7.1.css` files.
+3. Commit the changes and click **Push origin**. Cloudflare Pages will deploy automatically from `main` if configured correctly.
+4. In Cloudflare Pages → Deployments, confirm the latest build says **Success** and its commit matches the pushed commit.
+5. Visit the live site and use **View Page Source** on desktop: search for `<meta name="application-version" content="1.7.1">` (Astro may reorder attributes). This is a nonvisual marker for checking the deployed version. On iPhone, reopen the website in a private tab after Cloudflare deployment finishes.
+
+This release keeps the 60/40 mobile stage, v1.7 seek handling and grain level, and all other original design elements. The mobile portrait is newly cropped from the supplied art with no retouching of any face.
