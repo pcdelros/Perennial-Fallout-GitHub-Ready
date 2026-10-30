@@ -1,6 +1,7 @@
 import { get, reduced } from './dom';
 
-/** One 45-second preview, starting 3:03 before the file ends. Native audio is source of truth. */
+/** One 45-second preview starting 3:03 from the end of the track.
+ *  Seeking preserves the previous play/pause state across desktop and iOS Safari. */
 export function initPlayer(): void {
   const audio = get<HTMLAudioElement>('#featured-audio');
   const playButton = get<HTMLButtonElement>('#play-pause');
@@ -14,24 +15,59 @@ export function initPlayer(): void {
   let previewEnd = length;
   let ready = false;
   let finished = false;
+  let seeking = false;
+  let awaitingMetadata: number | null = null;
+  let seekWasPlaying = false;
+  let seekingValue = 0;
+
   function format(seconds: number): string {
-    const value = Math.max(0, Math.round(Number.isFinite(seconds) ? seconds : 0));
+    const value = Math.max(0, Math.ceil(Number.isFinite(seconds) ? seconds : 0));
     return `${Math.floor(value / 60)}:${String(value % 60).padStart(2, '0')}`;
+  }
+  function span(): number { return Math.max(.001, previewEnd - previewStart); }
+  function clampValue(value: number): number {
+    return Math.max(0, Math.min(1000, Number.isFinite(value) ? value : 0));
+  }
+  function showPosition(value: number): void {
+    const normalized = clampValue(value);
+    seek.value = String(Math.round(normalized));
+    seek.style.setProperty('--seek-progress', `${normalized / 10}%`);
+    const elapsed = normalized / 1000 * span();
+    remaining.textContent = format(span() - elapsed);
+    seek.setAttribute('aria-valuetext', `${Math.round(elapsed)} seconds of ${Math.round(span())}`);
+  }
+  function applySeek(normalized: number): void {
+    const value = clampValue(normalized);
+    showPosition(value);
+    if (!ready) {
+      awaitingMetadata = value;
+      if (audio.networkState === HTMLMediaElement.NETWORK_EMPTY) audio.load();
+      return;
+    }
+    awaitingMetadata = null;
+    seekingValue = value;
+    // Seeking *within* the preview must not pause the track. The endpoint
+    // is handled naturally by the timeupdate/end guard during playback.
+    finished = value === 1000;
+    try { audio.currentTime = previewStart + value / 1000 * span(); }
+    catch { awaitingMetadata = value; }
   }
   function configure(): void {
     if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
     previewStart = Math.max(0, audio.duration - initialRemaining);
     previewEnd = Math.min(audio.duration, previewStart + length);
-    if (!ready) { ready = true; audio.currentTime = previewStart; }
-    updateSeek();
+    if (!ready) {
+      ready = true;
+      const requested = awaitingMetadata;
+      awaitingMetadata = null;
+      if (requested !== null) applySeek(requested);
+      else { audio.currentTime = previewStart; showPosition(0); }
+    } else if (!seeking) updateSeek();
   }
   function updateSeek(): void {
-    const windowLength = Math.max(0.001, previewEnd - previewStart);
-    const seconds = Math.max(0, Math.min(windowLength, (audio.currentTime || 0) - previewStart));
-    const value = Math.round(seconds / windowLength * 1000);
-    seek.value = String(value);
-    seek.style.setProperty('--seek-progress', `${value / 10}%`);
-    remaining.textContent = format(Math.max(0, (previewEnd - previewStart) - seconds));
+    if (seeking) return; // Do not fight the user's finger/mouse during a drag.
+    const seconds = Math.max(0, Math.min(span(), (audio.currentTime || 0) - previewStart));
+    showPosition(seconds / span() * 1000);
   }
   function sync(): void {
     const playing = !audio.paused && !audio.ended;
@@ -43,14 +79,18 @@ export function initPlayer(): void {
     playButton.title = playing ? 'Pause song' : 'Play song';
     headerButton.title = playing ? 'Pause music' : 'Play music';
     playButton.classList.remove('just-toggled');
-    if (!reduced.matches) { void playButton.offsetWidth; playButton.classList.add('just-toggled'); }
+    if (!reduced.matches && !seeking) {
+      void playButton.offsetWidth;
+      playButton.classList.add('just-toggled');
+    }
     status.textContent = playing ? 'Music playing' : 'Music paused';
   }
   async function toggle(): Promise<void> {
     if (!audio.paused && !audio.ended) { audio.pause(); return; }
     if (!ready) configure();
-    if (finished || audio.ended || audio.currentTime < previewStart || audio.currentTime >= previewEnd - 0.02) {
-      audio.currentTime = previewStart; finished = false;
+    if (finished || audio.ended || (ready && (audio.currentTime < previewStart || audio.currentTime >= previewEnd - .02))) {
+      audio.currentTime = previewStart;
+      finished = false;
     }
     try { await audio.play(); }
     catch { status.textContent = 'Cannot play audio. Please check your browser settings.'; }
@@ -61,7 +101,8 @@ export function initPlayer(): void {
   audio.addEventListener('loadedmetadata', configure);
   audio.addEventListener('durationchange', configure);
   audio.addEventListener('timeupdate', () => {
-    if (audio.currentTime >= previewEnd - 0.04) {
+    if (seeking || !ready) return;
+    if (audio.currentTime >= previewEnd - .04) {
       if (audio.currentTime > previewEnd) audio.currentTime = previewEnd;
       finished = true;
       if (audio.loop) { finished = false; audio.currentTime = previewStart; }
@@ -69,15 +110,46 @@ export function initPlayer(): void {
     }
     updateSeek();
   });
-  for (const event of ['loadedmetadata', 'durationchange', 'seeked', 'ended']) audio.addEventListener(event, updateSeek);
-  seek.addEventListener('input', () => {
-    if (!ready) return;
-    audio.currentTime = previewStart + Number(seek.value) / 1000 * (previewEnd - previewStart);
-    finished = audio.currentTime >= previewEnd - 0.04;
-    if (finished && !audio.paused && !audio.loop) audio.pause();
+  for (const event of ['seeked', 'ended']) audio.addEventListener(event, updateSeek);
+
+  function beginScrub(): void {
+    if (seeking) return;
+    seeking = true;
+    seekWasPlaying = !audio.paused && !audio.ended;
+    seekingValue = clampValue(Number(seek.value));
+  }
+  function scrub(): void {
+    if (!seeking) beginScrub();
+    seekingValue = clampValue(Number(seek.value));
+    // The slider visual follows the user's gesture immediately, even when
+    // Safari hasn't loaded metadata yet. The audio time follows once ready.
+    applySeek(seekingValue);
+  }
+  function endScrub(): void {
+    if (!seeking) return;
+    const shouldContinue = seekWasPlaying;
+    const lastValue = seekingValue;
+    applySeek(lastValue);
+    seeking = false;
+    // Safari can pause HTML audio when its media position jumps; resume only
+    // if the user was already playing when the scrub began, never autoplay.
+    if (shouldContinue && lastValue < 1000 && audio.paused && ready) {
+      void audio.play().catch(() => {
+        status.textContent = 'Tap play to continue the preview.';
+      });
+    }
     updateSeek();
-  });
-  const restart = (): void => { finished = false; audio.currentTime = previewStart; updateSeek(); };
+  }
+  seek.addEventListener('pointerdown', beginScrub);
+  seek.addEventListener('input', scrub);
+  seek.addEventListener('change', endScrub); // Keyboard, tap, touch and mouse commits.
+  seek.addEventListener('pointerup', endScrub);
+  seek.addEventListener('pointercancel', endScrub);
+  seek.addEventListener('blur', endScrub);
+  // A touch-end fallback also covers older Safari versions without pointer events.
+  seek.addEventListener('touchend', endScrub, { passive:true });
+
+  const restart = (): void => { finished = false; applySeek(0); if (!seeking) updateSeek(); };
   get<HTMLButtonElement>('#previous').addEventListener('click', restart);
   get<HTMLButtonElement>('#next').addEventListener('click', restart);
   const repeat = get<HTMLButtonElement>('#repeat');

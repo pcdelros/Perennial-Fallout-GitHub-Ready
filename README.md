@@ -1,6 +1,6 @@
 # Perennial Fallout — Website (Astro + TypeScript)
 
-This repository contains the band's **homepage** source code. It uses Astro 7, TypeScript, custom CSS, and a static production build for Cloudflare Pages. This is the **v1.6 design with the mobile 60/40 hero adjustment**. No EPK page is included.
+This repository contains the band's **homepage** source code. It uses Astro 7, TypeScript, custom CSS, and a static production build for Cloudflare Pages. This is **v1.7**, preserving the v1.6 design and mobile 60/40 hero split with improved iPhone hero framing, reliable music seeking, and subtler hero grain. No EPK page is included.
 
 ## Before publishing
 
@@ -30,6 +30,12 @@ npm run build
 ```
 
 `npm run build` creates the static production website in `dist/`. Don't commit `dist/`: Cloudflare builds it from the source. The Astro Dev Toolbar doesn't appear in that production output.
+
+## Update your existing GitHub → Cloudflare Pages website
+
+If the site is already deployed at `perennial-fallout.pages.dev`, **update the existing GitHub repository**, not a new Cloudflare project. Replace the existing repository files with this version (keep its `.git` folder when using GitHub Desktop), review the changes, commit, and push to `main`. Cloudflare Pages will build and deploy automatically.
+
+Test on iPhone after the new deployment completes; refresh Safari to pick up the new styles and scripts. No backend configuration changes are required.
 
 ## Publish from GitHub to Cloudflare Pages
 
@@ -63,7 +69,7 @@ For a manual upload of static output *instead* of Git deployment, build locally 
 
 ## Cleanup notes
 
-Only required source files, assets, project configuration, lockfile and documentation are included. Generated `dist/`, `dist-preview/`, `.astro/` and `node_modules/` are excluded. Run `npm ci` to recreate dependencies. No visual redesign was performed during this cleanup.
+Only required source files, assets, project configuration, lockfile and documentation are included. Generated `dist/`, `dist-preview/`, `.astro/` and `node_modules/` are excluded. Run `npm ci` to recreate dependencies. The v1.7 edits are isolated to the hero composition, audio-seeking behavior, and hero grain. Other design elements are unchanged.
 
 ## Future integrations
 

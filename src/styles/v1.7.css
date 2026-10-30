@@ -1,0 +1,79 @@
+/* v1.7 — mobile hero composition and robust cross-device music seeking.
+   Imported after v1.6. The rest of the established site design is unchanged. */
+
+/* Make the seek bar an accessible touch target without visually thickening it.
+   Horizontal gestures adjust the audio; vertical gestures outside the rail still scroll. */
+#track-progress {
+  display:block;
+  height:44px;
+  min-height:44px;
+  width:100%;
+  position:relative;
+  z-index:5;
+  touch-action:pan-x;
+  user-select:none;
+  -webkit-user-select:none;
+  cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+#track-progress::-webkit-slider-runnable-track {height:4px;}
+#track-progress::-moz-range-track {height:4px;}
+#track-progress::-moz-range-progress {height:4px;}
+#track-progress::-webkit-slider-thumb {
+  width:16px;height:16px;margin-top:-6px;
+  box-shadow:0 0 0 8px transparent;
+}
+#track-progress::-moz-range-thumb {width:16px;height:16px;}
+#track-progress:focus-visible {outline:2px solid #d16e87;outline-offset:2px;border-radius:8px;}
+
+@media (max-width:760px) {
+  :root { --mobile-art-height:60svh; }
+  /* One consistent viewport-sized stage; the player starts at its bottom.
+     The photo fills mobile width and crops the smoke BELOW the performers,
+     rather than shrinking the whole band inside a letterboxed rectangle. */
+  .hero-art,.hero-smoke,.hero-shadow {height:var(--mobile-art-height)!important;}
+  .hero-inner {padding-top:var(--mobile-art-height)!important;}
+  .hero-art {overflow:hidden;background:#070608;}
+  .hero-art::before {opacity:.12;filter:blur(16px) brightness(.55);}
+  .hero-art picture {
+    position:absolute;
+    top:clamp(116px,17svh,152px);
+    right:0;bottom:0;left:0;
+    width:100%;
+    height:auto!important;
+    display:block;
+    overflow:hidden;
+    background:transparent!important;
+  }
+  .hero-art img {
+    display:block;
+    width:100%;height:100%!important;
+    max-width:none;
+    object-fit:cover!important;
+    object-position:center top!important;
+    transform:none!important;
+    filter:brightness(1.05) saturate(.98)!important;
+  }
+  /* Preserve the navbar blend and cleanly melt the image into the music card. */
+  .hero-art::after {
+    background:linear-gradient(to bottom,
+      #050507 0%,rgba(5,5,7,.96) 8%,rgba(5,5,7,.44) 20%,
+      transparent 38%,transparent 68%,rgba(11,11,13,.22) 80%,#0b0b0d 100%)!important;
+  }
+  .hero-shadow {
+    background:linear-gradient(to bottom,rgba(0,0,0,.32),transparent 34%,
+    transparent 72%,rgba(11,11,13,.2) 84%,#0b0b0d 100%)!important;
+  }
+  /* The header logo remains on its own layer; the drummer starts below it. */
+  .music-player {min-height:40svh;}
+}
+@media (max-width:360px) {
+  .hero-art picture {top:clamp(112px,16svh,140px);}
+}
+
+/* v1.7 — softer hero film grain. Keep atmospheric detail without visible jitter.
+   The rest of the website's background textures remain as designed. */
+.hero::after {
+  opacity:.032;
+  animation:grain-drift 4800ms steps(5,end) infinite;
+}
