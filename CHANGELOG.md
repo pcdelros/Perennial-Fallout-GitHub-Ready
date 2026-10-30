@@ -1,11 +1,12 @@
-# v1.7.2 — Edge-to-edge mobile hero
+# v1.7.3 — Band member names and single sharing
 
-- Adjusted the **mobile-only** hero image so it fills the page from left edge to right edge without horizontal cropping, zoom, or aspect-ratio distortion.
-- Replaced the mobile `object-fit: cover` behavior with a natural-aspect-ratio image (`width:100%; height:auto`) and eliminated the enlarged duplicate background layer.
-- Kept the 60/40 viewport split, logo clearance, top/bottom gradients, and original image fidelity. On short phones the stage's bottom fade may mask some lower smoke.
-- Kept v1.7.1 audio seek fixes, subtle grain, desktop hero, textures, and other pages/components unchanged.
-- Updated the version marker to `1.7.2` for deployment verification.
+- Updated the five band portraits with **uppercase** names: DONNIE (drums), PETER (guitar), CLINT (vocals), CHAD (guitar), ODIN (bass).
+- Confirmed **CHAD** is the bearded guitarist (`member-guitar-2.webp`) and **PETER** is the other guitarist (`member-guitar-1.webp`).
+- Replaced the hero music-player **ALL MUSIC** button with **SHARE**.
+- The Share button opens the native share sheet on supported mobile devices (including Safari on iPhone). On other browsers it copies a link to the `#music` section; the button briefly says **LINK COPIED**. Canceling the share sheet does not copy the link.
+- Kept the v1.7.2 mobile hero image behavior and the music scrubber fixes unchanged.
+- Updated `package.json`, `package-lock.json`, and the HTML deployment version marker to `1.7.3`.
 
-## Deployment
+## Deploy
 
-Replace the files in your existing GitHub repository root with the **contents** of this release, then commit and push. Cloudflare Pages should redeploy automatically from the connected branch. Verify that `package.json` version is `1.7.2`, and the website's page source contains `application-version` set to `1.7.2`.
+Copy the contents of the archive into the existing Cloudflare-connected GitHub repository root, commit, and **Push origin**. Check the successful Cloudflare deployment before refreshing Safari.

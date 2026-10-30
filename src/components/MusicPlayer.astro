@@ -23,6 +23,7 @@ import { siteConfig } from '../data/site';
           </div>
         </div>
         <div class="progress-row"><label for="track-progress" class="sr-only">Playback position</label><input type="range" id="track-progress" aria-label="Seek within 45-second music preview" aria-valuetext="0 seconds of 45" min="0" max="1000" step="1" value="0" style="--seek-progress:0%"><output class="remaining-time" id="remaining-time" aria-label="Time remaining in 45-second preview">0:45</output></div>
-        <div class="player-actions"><button type="button" class="pill pill-solid" data-coming-soon="Track purchases">Buy Track</button><button type="button" class="pill pill-outline" data-coming-soon="Music library">All Music</button></div>
+        <div class="player-actions"><button type="button" class="pill pill-solid" data-coming-soon="Track purchases">Buy Track</button><button type="button" class="pill pill-outline" id="share-track" aria-label="Share The Way by Perennial Fallout">Share</button></div>
         <p id="player-feedback" class="sr-only" role="status"></p>
+        <p id="share-feedback" class="sr-only" role="status" aria-live="polite"></p>
       </section>

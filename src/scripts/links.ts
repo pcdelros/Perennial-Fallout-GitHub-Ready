@@ -28,8 +28,9 @@ export function destination(url: string | undefined, origin: HTMLElement): void 
 export function initLinks(): void {
   all<HTMLButtonElement>('[data-coming-soon]').forEach(button => button.addEventListener('click', () => {
     const type = button.dataset.comingSoon;
-    destination(type === 'Track purchases' ? siteConfig.buyTrackUrl : type === 'Music library' ? siteConfig.allMusicUrl : '', button);
+    destination(type === 'Track purchases' ? siteConfig.buyTrackUrl : '', button);
   }));
+  initShare();
   all<HTMLButtonElement>('[data-social]').forEach(button => button.addEventListener('click', () => destination(siteConfig.socials[button.dataset.social ?? ''], button)));
   all<HTMLButtonElement>('[data-tickets]').forEach(button => button.addEventListener('click', () => destination(siteConfig.shows[Number(button.dataset.tickets)]?.ticketsUrl, button)));
   all<HTMLButtonElement>('[data-remind]').forEach(button => button.addEventListener('click', () => {
@@ -69,4 +70,66 @@ function downloadCalendar(show: Show, index: number): boolean {
   document.body.append(anchor); anchor.click(); anchor.remove();
   window.setTimeout(() => URL.revokeObjectURL(url), 2000);
   return true;
+}
+
+/** Share the single via the OS share sheet, with a copy-link fallback on desktop. */
+function initShare(): void {
+  const button = get<HTMLButtonElement>('#share-track');
+  const feedback = get<HTMLElement>('#share-feedback');
+  let resetLabel: number | undefined;
+
+  function acknowledge(message: string, label = 'Share'): void {
+    feedback.textContent = message;
+    window.clearTimeout(resetLabel);
+    button.textContent = label;
+    resetLabel = window.setTimeout(() => { button.textContent = 'Share'; }, 1600);
+  }
+
+  function shareLink(): string {
+    // Retain the real origin (the Pages domain or any future custom domain),
+    // but remove tracking/query params from the shared link.
+    const url = new URL(window.location.href);
+    url.search = '';
+    url.hash = 'music';
+    return url.toString();
+  }
+
+  async function copyLink(link: string): Promise<boolean> {
+    if (navigator.clipboard?.writeText) {
+      try { await navigator.clipboard.writeText(link); return true; }
+      catch { /* Fall through for restricted contexts. */ }
+    }
+    // Fallback for older browsers and local previews without Clipboard API.
+    const field = document.createElement('textarea');
+    field.value = link;
+    field.setAttribute('readonly', '');
+    field.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+    document.body.append(field);
+    field.select();
+    let copied = false;
+    try { copied = document.execCommand('copy'); } catch { /* Unsupported. */ }
+    field.remove();
+    return copied;
+  }
+
+  button.addEventListener('click', async () => {
+    const url = shareLink();
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: `${siteConfig.songTitle} — ${siteConfig.artist}`, text: `Listen to ${siteConfig.songTitle} by ${siteConfig.artist}.`, url });
+        feedback.textContent = 'Share sheet opened.';
+        return;
+      } catch (error) {
+        // Cancelling the native share sheet isn't a failure and should not
+        // unexpectedly copy a link to the user's clipboard.
+        if (error instanceof DOMException && error.name === 'AbortError') return;
+      }
+    }
+    if (await copyLink(url)) acknowledge('Link copied to clipboard.', 'LINK COPIED');
+    else {
+      // Last resort: show the URL in an easily selectable text field.
+      window.prompt('Copy this link to share the song:', url);
+      acknowledge('Share link ready to copy.');
+    }
+  });
 }
