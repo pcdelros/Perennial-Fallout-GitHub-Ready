@@ -86,3 +86,7 @@ The GitHub repository inspected during this update still showed `package.json` v
 5. Visit the live site and use **View Page Source** on desktop: search for `<meta name="application-version" content="1.7.1">` (Astro may reorder attributes). This is a nonvisual marker for checking the deployed version. On iPhone, reopen the website in a private tab after Cloudflare deployment finishes.
 
 This release keeps the 60/40 mobile stage, v1.7 seek handling and grain level, and all other original design elements. The mobile portrait is newly cropped from the supplied art with no retouching of any face.
+
+## v1.7.2 note — mobile hero framing
+
+The photo on mobile now fills the **entire viewport width** at its original aspect ratio, instead of being zoomed into a cropped picture stage. The hero stage still occupies 60svh and starts the player below it. On short screens, the bottom fade can conceal lower smoke but the band is not stretched or cropped horizontally. This release preserves the v1.7.1 playback fixes. The deployment version marker is `1.7.2`.
