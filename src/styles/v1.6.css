@@ -1,0 +1,69 @@
+/* v1.6 — mobile 60svh composition, 45-second countdown, true audio-responsive glow.
+   Component spacing increments follow the 4px system; icon sizes are 28px. */
+
+/* Explicit 1.6 type overrides. Artist is intentionally 12px, per latest request. */
+.song-artist { font-size:12px !important; }
+.player-play .play-shape,.player-play .pause-shape { width:28px !important;height:28px !important; }
+.remaining-time {font-variant-numeric:tabular-nums;min-width:48px;}
+
+/* The illuminated areas sit over the artwork; opacity derives from live audio data. */
+.hero-audio-glow {
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  opacity:var(--audio-glow-opacity,0);
+  mix-blend-mode:screen;
+  background:
+    radial-gradient(ellipse 44% 68% at 30% 64%,rgba(230,57,70,.72),transparent 78%),
+    radial-gradient(ellipse 34% 50% at 53% 45%,rgba(191,18,45,.56),transparent 82%);
+  transition:opacity 80ms linear;
+}
+
+@media (max-width:760px) {
+  /* Mobile fold: photo stage exactly 60% of the shortest stable viewport;
+     the music player begins in the final 40% and scrolls normally. */
+  :root { --mobile-art-height:60svh; }
+  .hero-art,.hero-smoke,.hero-shadow {height:var(--mobile-art-height) !important;}
+  .hero-inner {padding-top:var(--mobile-art-height) !important;}
+  .hero-art {background:#050507;}
+  /* Soft red extension fills the empty sides on short screens without
+     enlarging/cropping away the band in the foreground. */
+  .hero-art::before {
+    content:"";position:absolute;inset:-16px;pointer-events:none;
+    background:url('/assets/images/hero-band.webp') center 45% / cover no-repeat;
+    filter:blur(20px) brightness(.5);opacity:.24;z-index:0;
+  }
+  .hero-art picture {
+    position:absolute; inset:clamp(88px,11svh,112px) 0 0;
+    display:flex;align-items:flex-end;justify-content:center;
+    width:100%;height:auto !important;overflow:hidden;
+    background:transparent !important;z-index:1;
+  }
+  .hero-art img {
+    display:block; width:100%;height:100% !important;
+    object-fit:contain !important;object-position:center bottom !important;
+    transform:none !important;filter:brightness(1.05) saturate(.98) !important;
+  }
+  /* The fade preserves the original red composition while concealing the
+     artwork's upper and lower edges. Neither faces nor the logo is obscured. */
+  .hero-art::after {
+    z-index:2;
+    background:linear-gradient(180deg,#050507 0%,rgba(5,5,7,.98) 9%,
+      rgba(5,5,7,.75) 18%,rgba(5,5,7,.20) 29%,transparent 40%,
+      transparent 76%,rgba(11,11,13,.05) 86%,#0b0b0d 100%) !important;
+  }
+  .hero-shadow {
+    background:linear-gradient(180deg,rgba(0,0,0,.50),rgba(0,0,0,.12) 28%,
+    transparent 44%,transparent 74%,#0b0b0d 100%) !important;
+  }
+  .hero-audio-glow {
+    height:var(--mobile-art-height);bottom:auto;
+    background:radial-gradient(ellipse 68% 44% at 50% 66%,rgba(230,57,70,.70),transparent 82%),
+               radial-gradient(ellipse 62% 42% at 35% 76%,rgba(191,18,45,.4),transparent 86%);
+    opacity:var(--audio-glow-opacity,0);
+  }
+  /* Retain touch targets and let controls continue below the fold if needed. */
+  .music-player { min-height:40svh; }
+}
+
+@media (prefers-reduced-motion:reduce) {
+  .hero-audio-glow {display:none !important;}
+}

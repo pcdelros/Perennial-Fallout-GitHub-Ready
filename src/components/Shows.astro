@@ -1,0 +1,27 @@
+---
+import { siteConfig } from '../data/site';
+const { shows } = siteConfig;
+---
+<section class="shows textured" id="shows" aria-labelledby="shows-heading">
+  <div class="content-wrap shows-inner">
+    <h2 class="section-heading" id="shows-heading">Live Shows</h2>
+    <p class="sr-only">Notify Me downloads a calendar reminder for the selected show. Dates are preview examples pending confirmation.</p>
+    <div class="show-grid">
+      {shows.map((show, index) => {
+        const date = new Date(show.start);
+        const month = new Intl.DateTimeFormat('en-US', { month: 'short', timeZone: 'America/Phoenix' }).format(date);
+        const day = new Intl.DateTimeFormat('en-US', { day: 'numeric', timeZone: 'America/Phoenix' }).format(date);
+        return <article class="show-card">
+          <div class="show-content"><time class="date-card" datetime={show.start.slice(0, 10)}><span>{month}</span><strong>{day}</strong></time>
+            <div class="show-meta">
+              <p class="venue"><img src="/assets/icons/building-complex.svg" alt="" />{show.venue}</p>
+              <p><img src="/assets/icons/map-pin.svg" alt="" />{show.city}</p>
+              <p><img src="/assets/icons/clock-3.svg" alt="" />{show.time}</p>
+            </div>
+          </div>
+          <div class="show-actions"><button class="pill pill-solid" type="button" data-tickets={index}>Tickets</button><button class="pill pill-outline" type="button" data-remind={index}>Notify Me</button></div>
+        </article>;
+      })}
+    </div>
+  </div>
+</section>

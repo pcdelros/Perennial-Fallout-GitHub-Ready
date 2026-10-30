@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Astro / generated output
+.astro/
+dist/
+dist-preview/
+
+# Environment and local credentials
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# Cloudflare and other local tools
+.wrangler/
+.vercel/
+.cache/
+coverage/
+
+# OS/editor / temporary files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.log
+npm-debug.log*
+*.tsbuildinfo

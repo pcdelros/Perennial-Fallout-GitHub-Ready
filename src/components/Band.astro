@@ -1,0 +1,22 @@
+---
+import { siteConfig } from '../data/site';
+const { members } = siteConfig;
+---
+<section class="band textured" id="band" aria-labelledby="band-heading">
+    <div class="band-intro content-wrap">
+      <h2 class="section-heading" id="band-heading">Meet The Band</h2>
+      <div class="band-copy">
+        <p><span class="accent-text">Perennial Fallout</span> is a rock/metal band focused on heavy riffs, steady grooves, and honest songwriting.</p>
+        <p>Their music blends modern and classic influences, with a sound built around guitars, strong rhythms, and a clear sense of melody that works alongside the heaviness.</p>
+        <p>Their lyrics reflect real experiences and grounded themes, adding to the band's straightforward approach.</p>
+        <p>The name <span class="accent-text">Perennial Fallout</span> represents the lasting effects of personal events and the cycles people move through in life.</p>
+      </div>
+    </div>
+    <div class="members" aria-label="Members of Perennial Fallout" tabindex="0">
+      {members.map(member => <figure class="member">
+        <div class="member-visual"><img src={member.image} alt={member.alt} width="1024" height="1536" loading="lazy" decoding="async"/><span class="member-texture" aria-hidden="true"></span></div>
+        <figcaption><strong>{member.name}</strong><span>{member.role}</span></figcaption>
+      </figure>)}
+    </div>
+    <div class="band-actions content-wrap"><a class="pill pill-solid" href="#band-heading">About Us</a><button class="pill pill-outline" type="button" data-coming-soon="EPK">View EPK</button></div>
+  </section>

@@ -1,0 +1,65 @@
+/* v1.5 — Astro migration + fine spacing/motion refinements.
+   Layout measurements follow a 4px spacing grid (hairline borders excepted). */
+
+/* Header: restore breathing room without pushing sticky items out of the rail. */
+@media (min-width: 761px) {
+  .site-header:not(.is-scrolled):not(.is-open) .header-inner { padding-top:16px; }
+  .site-header:not(.is-scrolled):not(.is-open) .site-logo,
+  .site-header:not(.is-scrolled):not(.is-open) .site-logo img {
+    width:124px; min-width:124px; height:124px;
+  }
+  .site-header.is-scrolled .header-inner { padding-top:0; }
+}
+
+/* Balanced title spacing on both layouts. */
+.song-name { margin-top:12px!important; margin-bottom:12px!important; }
+
+/* Only textured section planes move in 3D; the content and footer remain fixed. */
+.shows::before,.band::before,.newsletter::before {
+  transition:none!important;
+  backface-visibility:hidden;
+  transform:perspective(960px)
+    translate3d(var(--depth-x,0px),var(--depth-shift,0px),0)
+    rotateX(var(--depth-angle,0deg))
+    rotateY(var(--depth-yaw,0deg))
+    scale(1.12)!important;
+}
+.site-footer::before,
+.footer-identity,.footer-inner,.footer-navs,.footer-column,.footer-links-shell,.footer-links {
+  transform:none!important;
+  perspective:none!important;
+}
+
+@media (max-width:760px) {
+  /* Move the band's top-row performers lower beneath the logo and cut away
+     some of the less useful dark smoke underneath the vocalist. */
+  :root { --mobile-art-height:min(116vw,480px); }
+  .hero-art,.hero-smoke,.hero-shadow { height:var(--mobile-art-height)!important; }
+  .hero-inner { padding-top:var(--mobile-art-height)!important; }
+  .hero-art picture { overflow:hidden; }
+  .hero-art img {
+    width:100%;height:100%!important;
+    object-fit:cover;
+    object-position:center 42%;
+    transform:translateY(32px) scale(1.045)!important;
+    transform-origin:top center;
+    filter:brightness(1.08) saturate(.96);
+  }
+  .hero-art::after {
+    background:linear-gradient(180deg,#050507 0%,rgba(5,5,7,.90) 8%,rgba(5,5,7,.32) 20%,transparent 34%,transparent 82%,#0b0b0d 100%)!important;
+  }
+  .hero-shadow {
+    background:linear-gradient(180deg,rgba(0,0,0,.30),transparent 32%,transparent 83%,#0b0b0d 100%)!important;
+  }
+  .music-player { padding-left:32px!important;padding-right:32px!important; }
+  .player-controls { padding-bottom:16px!important;margin-bottom:0!important; }
+  .mobile-navigation button:last-child { border-top:1px solid rgba(255,255,255,.10)!important; }
+  /* No footer texture motion, opacity-scaling, perspective or layout transforms. */
+  .site-footer::before { transform:none!important; }
+}
+@media (max-width:360px) {
+  .music-player { padding-left:24px!important; padding-right:24px!important; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .shows::before,.band::before,.newsletter::before { transform:none!important; }
+}

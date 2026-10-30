@@ -1,0 +1,11 @@
+---
+// Newsletter — semantic, server-rendered Astro component.
+---
+<section class="newsletter textured" id="newsletter" aria-labelledby="newsletter-heading">
+    <div class="newsletter-texture-flicker" id="newsletter-texture-flicker" aria-hidden="true"></div>
+    <div class="newsletter-content content-wrap"><h2 class="section-heading" id="newsletter-heading">Enter The Fallout</h2>
+      <p>Get first access to new music, upcoming shows,<br class="desktop-break"> exclusive merch, and band updates.</p>
+      <form class="newsletter-form" id="newsletter-form" novalidate><label class="sr-only" for="email">Email address</label><input id="email" name="email" type="email" autocomplete="email" placeholder="Enter your email address" required><button class="pill pill-solid" type="submit">Subscribe</button></form>
+      <p id="newsletter-message" class="form-message" role="status" aria-live="polite"></p>
+    </div>
+  </section>
