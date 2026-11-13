@@ -1,0 +1,66 @@
+/* Perennial Fallout v1.8 — softer artwork boundaries and anchor consistency.
+   Appends to the approved v1.7.5 styles; all established interactions remain. */
+
+@media (min-width: 761px) {
+  /* Align the uncropped art to the bottom of the hero and fade its ACTUAL sides.
+     Masking the img (instead of the larger stage) avoids letterbox seams at
+     wide desktop sizes where object-fit:contain creates empty side gutters. */
+  .hero-art picture {
+    display: flex !important;
+    justify-content: center;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-art picture img {
+    position: relative;
+    flex: none;
+    width: auto !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+    object-fit: contain !important;
+    object-position: center bottom !important;
+    transform: none !important;
+    -webkit-mask-image: linear-gradient(90deg,
+      transparent 0%, rgba(0,0,0,.24) 5%, rgba(0,0,0,.72) 11%,
+      #000 19%, #000 81%, rgba(0,0,0,.72) 89%,
+      rgba(0,0,0,.24) 95%, transparent 100%);
+    mask-image: linear-gradient(90deg,
+      transparent 0%, rgba(0,0,0,.24) 5%, rgba(0,0,0,.72) 11%,
+      #000 19%, #000 81%, rgba(0,0,0,.72) 89%,
+      rgba(0,0,0,.24) 95%, transparent 100%);
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+}
+
+@media (max-width: 760px) {
+  /* The image stage and music area share the exact same black, eliminating
+     the color jump that made a visible horizontal line near the stage end. */
+  .hero, .hero-art { background-color: #0b0b0d !important; }
+  /* Give the drummer more room below the navigation logo without scaling
+     or horizontally cropping the approved edge-to-edge portrait image. */
+  .hero-art picture {
+    top: clamp(84px, 11svh, 112px) !important;
+    -webkit-mask-image: linear-gradient(180deg,
+      transparent 0%, rgba(0,0,0,.72) 8%, #000 17%,
+      #000 69%, rgba(0,0,0,.78) 80%, transparent 100%) !important;
+    mask-image: linear-gradient(180deg,
+      transparent 0%, rgba(0,0,0,.72) 8%, #000 17%,
+      #000 69%, rgba(0,0,0,.78) 80%, transparent 100%) !important;
+  }
+  .hero-art::after {
+    background: linear-gradient(180deg,
+      rgba(11,11,13,.94) 0%, rgba(11,11,13,.54) 13%,
+      transparent 29%, transparent 63%,
+      rgba(11,11,13,.26) 76%, rgba(11,11,13,.90) 90%,
+      #0b0b0d 96%, #0b0b0d 100%) !important;
+  }
+  .hero-shadow {
+    background: linear-gradient(180deg,
+      rgba(11,11,13,.38), transparent 28%, transparent 70%,
+      rgba(11,11,13,.32) 81%, #0b0b0d 100%) !important;
+  }
+  .song-name { font-size: 36px !important; }
+  .newsletter-form { row-gap: 12px !important; }
+}

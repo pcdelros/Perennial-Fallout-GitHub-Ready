@@ -1,0 +1,52 @@
+/* Perennial Fallout v1.7.5 — hero composition and playback visibility.
+   The existing desktop/mobile design and share behavior remain intact. */
+
+/* Global typography: featured single title. */
+.song-name { font-size:48px !important; line-height:1.12; }
+
+/* Desktop: keep the full image visible, centered horizontally and seated
+   against the bottom edge of the hero. No unused black strip underneath. */
+@media (min-width:761px) {
+  .hero-art { overflow:hidden; }
+  .hero-art picture {
+    position:absolute !important;
+    inset:0 !important;
+    width:100% !important;
+    height:100% !important;
+    display:block !important;
+  }
+  .hero-art picture img {
+    display:block !important;
+    width:100% !important;
+    height:100% !important;
+    max-width:100% !important;
+    max-height:100% !important;
+    object-fit:contain !important;
+    object-position:center bottom !important;
+    transform:none !important;
+  }
+}
+
+/* Mobile: feather the actual picture at both edges. Masking the photograph
+   itself eliminates the sharp rectangle at its top and lower boundary, while
+   maintaining the edge-to-edge, uncropped width established in v1.7.2. */
+@media (max-width:760px) {
+  .hero-art picture {
+    top:clamp(64px,9svh,96px) !important;
+    -webkit-mask-image:linear-gradient(to bottom,
+      transparent 0%, rgba(0,0,0,.55) 5%, #000 14%,
+      #000 74%, rgba(0,0,0,.78) 83%, transparent 100%);
+    mask-image:linear-gradient(to bottom,
+      transparent 0%, rgba(0,0,0,.55) 5%, #000 14%,
+      #000 74%, rgba(0,0,0,.78) 83%, transparent 100%);
+    -webkit-mask-repeat:no-repeat;
+    mask-repeat:no-repeat;
+  }
+  .hero-art::after {
+    background:linear-gradient(180deg,
+      #050507 0%,rgba(5,5,7,.65) 9%,transparent 23%,
+      transparent 69%,rgba(11,11,13,.13) 82%,#0b0b0d 100%) !important;
+  }
+  /* Add 24px to the previously 16px internal show-card row gap. */
+  .show-card { row-gap:40px !important; gap:40px !important; }
+}

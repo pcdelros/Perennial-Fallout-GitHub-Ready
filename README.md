@@ -1,10 +1,10 @@
 # Perennial Fallout — Website (Astro + TypeScript)
 
-This repository contains the band's **homepage** source code. It uses Astro 7, TypeScript, custom CSS, and a static production build for Cloudflare Pages. This is **v1.7.3**, preserving the v1.7.2 full-width mobile hero, 60/40 layout, reliable music seeking, and subtler hero grain. Band portraits now show the correct names, and the player can share the single. No EPK page is included.
+This repository contains the band's **homepage** source code. It uses Astro 7, TypeScript, custom CSS, and a static production build for Cloudflare Pages. This is **v1.8.1**, preserving the v1.7.2 full-width mobile hero, 60/40 layout, reliable music seeking, and subtler hero grain. Band portraits show the correct names, and the player can share the single. v1.8 adds soft desktop side fades, a seamless mobile hero-to-player transition, updated mobile title/newsletter spacing, and a corrected About Us anchor. **v1.8.1** also softens the top edge of the desktop image, reduces excessive dark space beneath the mobile hero on taller devices, tightens mobile show-card spacing, and adds a subtle shine to the New Single label. No EPK page is included.
 
 ## Before publishing
 
-The website can be built and deployed, but **some content and services are placeholders**. The member names are now set to DONNIE, PETER, CLINT, CHAD and ODIN. Update `src/data/site.ts` with confirmed show dates and times, ticket links, streaming/social links and purchase links. The newsletter currently has **no signup endpoint**; it does not subscribe visitors. Privacy/purchase links display *Coming Soon*. Confirm you have permission to publish all photos, art and the included audio track.
+The website is configured for static building and deployment, but **some content and services are placeholders**. The member names are now set to DONNIE, PETER, CLINT, CHAD and ODIN. Update `src/data/site.ts` with confirmed show dates and times, ticket links, streaming/social links and purchase links. The newsletter currently has **no signup endpoint**; it does not subscribe visitors. Privacy/purchase links display *Coming Soon*. Confirm you have permission to publish all photos, art and the included audio track.
 
 > IMPORTANT: `src/data/site.ts` contains example venues/dates. **Do not treat them as confirmed performances or distribute calendar reminders without verification.**
 
@@ -91,6 +91,6 @@ This release keeps the 60/40 mobile stage, v1.7 seek handling and grain level, a
 
 The photo on mobile now fills the **entire viewport width** at its original aspect ratio, instead of being zoomed into a cropped picture stage. The hero stage still occupies 60svh and starts the player below it. On short screens, the bottom fade can conceal lower smoke but the band is not stretched or cropped horizontally. This release preserves the v1.7.1 playback fixes. The deployment version marker is `1.7.2`.
 
-## v1.7.3 — Share and member names
+## v1.7.5 — Share and member names
 
-Band captions are now uppercase, and the **bearded guitarist is CHAD**. The hero player now has a **SHARE** action that offers native sharing on iOS/Android when available, or a clipboard copy of the website's `#music` link on desktop. The live site must be on HTTPS for native sharing and modern clipboard APIs. Nothing else about the v1.7.2 layout or player seeking was changed. The deployment marker and package versions read `1.7.3`.
+Band captions are now uppercase, and the **bearded guitarist is CHAD**. The hero player now has a **SHARE** action that offers native sharing on iOS/Android when available, or a clipboard copy of the website's `#music` link on desktop. The live site must be on HTTPS for native sharing and modern clipboard APIs. Nothing else about the v1.7.2 layout or player seeking was changed. The deployment marker and package versions read `1.7.5`.

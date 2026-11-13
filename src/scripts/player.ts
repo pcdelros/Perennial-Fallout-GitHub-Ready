@@ -19,6 +19,8 @@ export function initPlayer(): void {
   let awaitingMetadata: number | null = null;
   let seekWasPlaying = false;
   let seekingValue = 0;
+  let progressFrame: number | null = null;
+
 
   function format(seconds: number): string {
     const value = Math.max(0, Math.ceil(Number.isFinite(seconds) ? seconds : 0));
@@ -69,8 +71,38 @@ export function initPlayer(): void {
     const seconds = Math.max(0, Math.min(span(), (audio.currentTime || 0) - previewStart));
     showPosition(seconds / span() * 1000);
   }
+  /** Media timeupdate is throttled (especially on mobile and background tabs).
+   *  Render the progress thumb every animation frame while playback is active.
+   *  This loop only reads currentTime; it never changes playback state. */
+  function stopProgressAnimation(): void {
+    if (progressFrame !== null) cancelAnimationFrame(progressFrame);
+    progressFrame = null;
+  }
+  function animateProgress(): void {
+    progressFrame = null;
+    if (audio.paused || audio.ended) return;
+    if (!seeking && ready) {
+      enforcePreviewEnd();
+      updateSeek();
+    }
+    if (!audio.paused && !audio.ended) progressFrame = requestAnimationFrame(animateProgress);
+  }
+  function startProgressAnimation(): void {
+    if (progressFrame === null && !audio.paused && !audio.ended && !document.hidden) {
+      progressFrame = requestAnimationFrame(animateProgress);
+    }
+  }
+  function enforcePreviewEnd(): void {
+    if (!ready || seeking || audio.currentTime < previewEnd - .04) return;
+    if (audio.currentTime > previewEnd) audio.currentTime = previewEnd;
+    finished = true;
+    if (audio.loop) { finished = false; audio.currentTime = previewStart; }
+    else if (!audio.paused) audio.pause();
+  }
   function sync(): void {
     const playing = !audio.paused && !audio.ended;
+    if (playing) startProgressAnimation();
+    else { stopProgressAnimation(); updateSeek(); }
     playButton.classList.toggle('is-playing', playing);
     headerButton.classList.toggle('is-playing', playing);
     playButton.setAttribute('aria-label', playing ? 'Pause song' : 'Play song');
@@ -102,15 +134,14 @@ export function initPlayer(): void {
   audio.addEventListener('durationchange', configure);
   audio.addEventListener('timeupdate', () => {
     if (seeking || !ready) return;
-    if (audio.currentTime >= previewEnd - .04) {
-      if (audio.currentTime > previewEnd) audio.currentTime = previewEnd;
-      finished = true;
-      if (audio.loop) { finished = false; audio.currentTime = previewStart; }
-      else if (!audio.paused) audio.pause();
-    }
+    enforcePreviewEnd();
     updateSeek();
   });
   for (const event of ['seeked', 'ended']) audio.addEventListener(event, updateSeek);
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopProgressAnimation();
+    else startProgressAnimation();
+  });
 
   function beginScrub(): void {
     if (seeking) return;
@@ -146,6 +177,9 @@ export function initPlayer(): void {
   seek.addEventListener('pointerup', endScrub);
   seek.addEventListener('pointercancel', endScrub);
   seek.addEventListener('blur', endScrub);
+  // A dragged thumb may finish outside the input on touchscreens or desktop.
+  window.addEventListener('pointerup', endScrub);
+  window.addEventListener('pointercancel', endScrub);
   // A touch-end fallback also covers older Safari versions without pointer events.
   seek.addEventListener('touchend', endScrub, { passive:true });
 

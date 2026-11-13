@@ -1,0 +1,78 @@
+/* v1.8.1 — refine the original artwork edges without changing the band image.
+   Keep the previous desktop side feather and all established music interactions. */
+
+@media (min-width: 761px) {
+  /* The picture fades IN from the page background. The image already has its
+     own left/right mask from v1.8; nesting these masks blends both axes. */
+  .hero-art picture {
+    -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0%, rgba(0,0,0,.15) 6%, rgba(0,0,0,.55) 15%,
+      rgba(0,0,0,.90) 24%, #000 30%, #000 100%) !important;
+    mask-image: linear-gradient(to bottom,
+      transparent 0%, rgba(0,0,0,.15) 6%, rgba(0,0,0,.55) 15%,
+      rgba(0,0,0,.90) 24%, #000 30%, #000 100%) !important;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+}
+
+@media (max-width: 760px) {
+  /* On tall phones, the full 60svh stage left a long empty black band once
+     the picture's aggressive bottom mask was applied. Cap that empty space
+     against the edge-to-edge photo's native proportions. On short phones,
+     the existing 60svh cap still protects the performer framing. */
+  :root {
+    --mobile-art-height: min(60svh, calc(100vw * 1.04 + 56px));
+  }
+  .hero-art, .hero-smoke, .hero-shadow {
+    height: var(--mobile-art-height) !important;
+  }
+  .hero-inner {
+    padding-top: var(--mobile-art-height) !important;
+  }
+  /* Keep the full photo width and the lowered drummer from v1.8. The image
+     stays visible farther down; only the stage's final pixels fade away. */
+  .hero-art picture {
+    -webkit-mask-image: linear-gradient(to bottom,
+      transparent 0%, rgba(0,0,0,.74) 8%, #000 15%, #000 100%) !important;
+    mask-image: linear-gradient(to bottom,
+      transparent 0%, rgba(0,0,0,.74) 8%, #000 15%, #000 100%) !important;
+  }
+  .hero-art::after {
+    background: linear-gradient(180deg,
+      #0b0b0d 0%, rgba(11,11,13,.66) 12%,
+      transparent 28%, transparent 81%,
+      rgba(11,11,13,.18) 87%, rgba(11,11,13,.78) 96%,
+      #0b0b0d 100%) !important;
+  }
+  .hero-shadow {
+    background: linear-gradient(180deg,
+      rgba(11,11,13,.40) 0%, transparent 28%,
+      transparent 84%, rgba(11,11,13,.30) 94%,
+      #0b0b0d 100%) !important;
+  }
+  .music-player { padding-top: 16px !important; }
+  /* 40px in v1.7.5 minus the requested 32px. */
+  .show-card { row-gap: 8px !important; gap: 8px !important; }
+}
+
+/* A soft glint crosses only the NEW SINGLE letters, not a rectangular shine
+   across the hero. The long idle phase keeps it unobtrusive. */
+.music-player .eyebrow {
+  display: inline-block;
+  background-image: linear-gradient(110deg,
+    #a43b52 37%, #b96579 46%, #e0a4b2 50%, #b96579 54%, #a43b52 63%);
+  background-size: 260% 100%;
+  background-position: 100% 0;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: single-title-glint 9s ease-in-out infinite;
+}
+@keyframes single-title-glint {
+  0%, 25% { background-position: 100% 0; }
+  48%, 100% { background-position: 0% 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .music-player .eyebrow { animation: none !important; background-position: 100% 0; }
+}
