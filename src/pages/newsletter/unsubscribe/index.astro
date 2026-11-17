@@ -1,0 +1,28 @@
+---
+import SupportLayout from '../../../layouts/SupportLayout.astro';
+---
+<SupportLayout title="Unsubscribe" eyebrow="THE FALLOUT / EMAIL PREFERENCES" description="Stop future marketing emails from Perennial Fallout at any time.">
+  <h2>Leave the mailing list</h2>
+  <p>If you no longer want band updates, select Unsubscribe below. Your email address will be removed from the active mailing list.</p>
+  <div class="support-action"><button type="button" class="pill pill-solid" id="unsubscribe-action">Unsubscribe</button><a href="/" class="pill pill-outline">Keep subscription</a></div>
+  <p id="unsubscribe-result" class="cookie-save-feedback" role="status" aria-live="polite"></p>
+  <p>Having trouble? Contact <a class="support-email" href="mailto:perennialfallout@gmail.com?subject=Unsubscribe%20Request">perennialfallout@gmail.com</a>.</p>
+</SupportLayout>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#unsubscribe-action');
+  const message = document.querySelector<HTMLElement>('#unsubscribe-result');
+  const token = new URLSearchParams(location.search).get('token');
+  if (button && message) {
+    if (!token || !/^[a-f\d]{64}$/.test(token)) { button.disabled = true; message.textContent = 'This unsubscribe link is invalid. Contact the band for assistance.'; }
+    else button.addEventListener('click', async () => {
+      button.disabled = true; button.textContent = 'PROCESSING…'; message.textContent = 'Updating your preference…';
+      try {
+        const response = await fetch('/api/newsletter/unsubscribe', { method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token}) });
+        const data = await response.json() as {message:string};
+        message.textContent = data.message || 'Unable to update subscription.';
+        if (response.ok) { button.textContent = 'UNSUBSCRIBED'; history.replaceState(null,'',location.pathname); }
+        else { button.textContent = 'TRY AGAIN'; button.disabled = false; }
+      } catch { message.textContent = 'Connection problem. Please try again.'; button.textContent = 'TRY AGAIN'; button.disabled = false; }
+    });
+  }
+</script>

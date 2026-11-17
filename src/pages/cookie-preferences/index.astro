@@ -1,0 +1,56 @@
+---
+import SupportLayout from '../../layouts/SupportLayout.astro';
+---
+<SupportLayout title="Cookie Preferences" eyebrow="SUPPORT / YOUR CHOICES" description="See what browser storage the site uses and choose whether to remember your music player settings.">
+  <h2>Manage your preferences</h2>
+  <p>Perennial Fallout currently does not run advertising pixels or audience analytics cookies. Most site features work without storing preferences in your browser. You can choose whether the site remembers your music player settings between visits.</p>
+  <div class="cookie-panel" id="cookie-panel">
+    <div class="cookie-option">
+      <div><h3>Essential site functions</h3><p>Basic page operation and protection against spam. These functions cannot be switched off using this page.</p></div>
+      <span class="cookie-status">Always on</span>
+    </div>
+    <div class="cookie-option">
+      <div><h3>Remember music player settings</h3><p>If enabled, the site remembers your volume level and repeat preference on this device. Turning this off removes any saved player settings.</p></div>
+      <label class="cookie-toggle" title="Remember music player settings"><input type="checkbox" id="remember-player" aria-label="Remember music player settings" /><span aria-hidden="true"></span></label>
+    </div>
+    <div class="cookie-option">
+      <div><h3>Analytics and advertising</h3><p>The site does not currently operate optional analytics or targeted advertising tracking. There is nothing to opt into or disable for these categories at present.</p></div>
+      <span class="cookie-status">Not used</span>
+    </div>
+  </div>
+  <div class="support-action">
+    <button type="button" class="pill pill-solid" id="save-cookie-preferences">Save preferences</button>
+    <button type="button" class="pill pill-outline" id="clear-cookie-preferences">Clear saved preferences</button>
+  </div>
+  <p class="cookie-save-feedback" role="status" aria-live="polite" id="cookie-save-feedback"></p>
+  <h2>What this controls</h2>
+  <p>Music player preferences are stored only in your browser's local storage when you enable that option. The preference selection itself is saved locally so the site can honor it on future visits. Local storage is not the same as a tracking cookie and is not sent automatically to our servers.</p>
+  <h2>Services used to operate this site</h2>
+  <ul>
+    <li><strong>Cloudflare:</strong> Hosts the site and provides security features, including Turnstile when the newsletter signup form is available. Depending on configuration and traffic, security features may use technical browser information and cookies needed to protect the site.</li>
+    <li><strong>Google Fonts:</strong> Supplies the Barlow and Metal Mania fonts. Loading the fonts sends a request to Google's servers.</li>
+    <li><strong>Resend:</strong> Handles newsletter confirmation and welcome emails when a visitor voluntarily signs up; it does not run an advertising tracker on this page.</li>
+  </ul>
+  <p>Your browser may also permit you to block or delete cookies and other site data through its own settings. Disabling browser storage may affect whether your preferences are remembered.</p>
+  <h2>More privacy information</h2>
+  <p>For details about newsletter data, external services, data retention, or privacy requests, read our <a href="/privacy-policy/">Privacy Policy</a> or contact <a class="support-email" href="mailto:perennialfallout@gmail.com?subject=Cookie%20Question">perennialfallout@gmail.com</a>.</p>
+</SupportLayout>
+<script>
+  import { getMusicPreferenceConsent, setMusicPreferenceConsent, clearMusicPreferences } from '../../scripts/preferences';
+  const checkbox = document.querySelector<HTMLInputElement>('#remember-player');
+  const feedback = document.querySelector<HTMLElement>('#cookie-save-feedback');
+  const save = document.querySelector<HTMLButtonElement>('#save-cookie-preferences');
+  const clear = document.querySelector<HTMLButtonElement>('#clear-cookie-preferences');
+  if (checkbox && feedback && save && clear) {
+    checkbox.checked = getMusicPreferenceConsent();
+    save.addEventListener('click', () => {
+      setMusicPreferenceConsent(checkbox.checked);
+      feedback.textContent = checkbox.checked ? 'Preferences saved. Music settings will now be remembered.' : 'Preferences saved. Music settings will not be remembered.';
+    });
+    clear.addEventListener('click', () => {
+      clearMusicPreferences();
+      checkbox.checked = false;
+      feedback.textContent = 'Saved player settings and preferences have been cleared from this browser.';
+    });
+  }
+</script>

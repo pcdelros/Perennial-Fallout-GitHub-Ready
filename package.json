@@ -1,6 +1,6 @@
 {
   "name": "perennial-fallout-website",
-  "version": "1.8.1",
+  "version": "1.8.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro preview --host 127.0.0.1",
     "check": "astro check",
-    "typecheck:client": "tsc --project tsconfig.scripts.json --noEmit"
+    "typecheck:client": "tsc --project tsconfig.scripts.json --noEmit",
+    "typecheck:functions": "tsc --project tsconfig.functions.json --noEmit"
   },
   "dependencies": {
     "astro": "^7.1.0"

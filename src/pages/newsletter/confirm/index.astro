@@ -1,0 +1,28 @@
+---
+import SupportLayout from '../../../layouts/SupportLayout.astro';
+---
+<SupportLayout title="Confirm Subscription" eyebrow="THE FALLOUT / EMAIL VERIFICATION" description="Verify your email to finish joining the Perennial Fallout mailing list.">
+  <h2>Confirm your email address</h2>
+  <p>Confirming helps make sure no one else signs you up without your permission. Once verified, you'll receive a welcome message and be included in future band newsletters.</p>
+  <div class="support-action"><button type="button" class="pill pill-solid" id="confirm-subscription">Confirm subscription</button><a href="/" class="pill pill-outline">Return to website</a></div>
+  <p id="subscription-result" class="cookie-save-feedback" aria-live="polite" role="status"></p>
+  <p>You can unsubscribe at any time using the link in a subscription email.</p>
+</SupportLayout>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('#confirm-subscription');
+  const message = document.querySelector<HTMLElement>('#subscription-result');
+  const token = new URLSearchParams(location.search).get('token');
+  if (button && message) {
+    if (!token || !/^[a-f\d]{64}$/.test(token)) { button.disabled = true; message.textContent = 'This confirmation link is invalid. Please subscribe again from the homepage.'; }
+    else button.addEventListener('click', async () => {
+      button.disabled = true; button.textContent = 'CONFIRMING…'; message.textContent = 'Checking your subscription…';
+      try {
+        const response = await fetch('/api/newsletter/confirm', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({token}) });
+        const data = await response.json() as {message:string};
+        message.textContent = data.message || 'Unable to confirm subscription.';
+        if (response.ok) { button.textContent = 'CONFIRMED'; history.replaceState(null,'',location.pathname); }
+        else { button.textContent = 'TRY AGAIN'; button.disabled = false; }
+      } catch { message.textContent = 'Connection problem. Please try again.'; button.textContent = 'TRY AGAIN'; button.disabled = false; }
+    });
+  }
+</script>

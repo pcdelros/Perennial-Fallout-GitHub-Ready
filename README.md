@@ -1,96 +1,52 @@
-# Perennial Fallout — Website (Astro + TypeScript)
+# Perennial Fallout — Website v1.8.3
 
-This repository contains the band's **homepage** source code. It uses Astro 7, TypeScript, custom CSS, and a static production build for Cloudflare Pages. This is **v1.8.1**, preserving the v1.7.2 full-width mobile hero, 60/40 layout, reliable music seeking, and subtler hero grain. Band portraits show the correct names, and the player can share the single. v1.8 adds soft desktop side fades, a seamless mobile hero-to-player transition, updated mobile title/newsletter spacing, and a corrected About Us anchor. **v1.8.1** also softens the top edge of the desktop image, reduces excessive dark space beneath the mobile hero on taller devices, tightens mobile show-card spacing, and adds a subtle shine to the New Single label. No EPK page is included.
+Official Perennial Fallout website. Built with **Astro 7 + TypeScript**, statically deployed through **GitHub → Cloudflare Pages**. This update adds complete Support pages and a fully coded optional email signup flow via Cloudflare D1 + Resend while preserving the existing responsive homepage, audio preview, band portraits, and branding.
 
-## Before publishing
+## What's in this release
 
-The website is configured for static building and deployment, but **some content and services are placeholders**. The member names are now set to DONNIE, PETER, CLINT, CHAD and ODIN. Update `src/data/site.ts` with confirmed show dates and times, ticket links, streaming/social links and purchase links. The newsletter currently has **no signup endpoint**; it does not subscribe visitors. Privacy/purchase links display *Coming Soon*. Confirm you have permission to publish all photos, art and the included audio track.
+- Four complete responsive support pages linked in the existing footer: `/purchase-terms/`, `/privacy-policy/`, `/terms-of-use/`, `/cookie-preferences/`.
+- Cookie Preferences lets visitors enable/disable persistence of music-player volume and repeat, or erase saved preferences; no site-operated analytics or advertising tags are present.
+- Newsletter button uses **SUBSCRIBE** and **SUBSCRIBING…** with matching uppercase button typography.
+- Newsletter backend: Cloudflare Turnstile, D1 subscriber storage, double opt-in confirmation, Resend welcome email, band notification to `perennialfallout@gmail.com`, and unsubscribe.
+- All private API keys and subscriber records remain outside the frontend and Git repository.
 
-> IMPORTANT: `src/data/site.ts` contains example venues/dates. **Do not treat them as confirmed performances or distribute calendar reminders without verification.**
+**Newsletter email delivery requires configuration in Cloudflare and Resend; deploying the ZIP alone does not activate it.** Follow [SETUP-NEWSLETTER.md](./SETUP-NEWSLETTER.md) for exact steps. The public form fails closed and does not pretend subscribers are registered before backend setup is complete.
 
-## Develop on Windows
+## Website details
 
-- Install [Node.js](https://nodejs.org/) **22.23.4 or later** (includes npm). The `.node-version` file pins the required Node version for supported build environments, including Cloudflare Pages.
-- Run `START_WEBSITE.bat` in the project directory, or use the commands below in a terminal.
+- `src/pages/index.astro` — homepage
+- `src/pages/{purchase-terms,privacy-policy,terms-of-use,cookie-preferences}/` — public support pages
+- `src/layouts/SupportLayout.astro` + `src/styles/support.css` — responsive branded legal layout
+- `src/scripts/preferences.ts` — optional volume/repeat persistence, controlled by cookie preferences
+- `src/components/Newsletter.astro` + `src/scripts/newsletter.ts` — existing form with confirmation UI
+- `functions/api/newsletter/` — Cloudflare Pages Functions
+- `server/newsletter.ts` — shared server-only email, verification and token helpers
+- `migrations/0001_subscribers.sql` — D1 schema, not executed until setup
+- `src/data/site.ts` — band and event content
+- `public/assets/` — original image, audio, and texture assets
 
-```sh
-npm ci
-npm run dev
-```
+## Local setup
 
-Open `http://127.0.0.1:4321` in a browser. Stop the server with **Ctrl+C**.
+Install **Node.js 22.23.4+**. Use `START_WEBSITE.bat` on Windows or:
 
-## Verify before committing or deploying
-
-```sh
+```bash
 npm ci
 npm run typecheck:client
+npm run typecheck:functions
 npm run check
 npm run build
 ```
 
-`npm run build` creates the static production website in `dist/`. Don't commit `dist/`: Cloudflare builds it from the source. The Astro Dev Toolbar doesn't appear in that production output.
+Launch the site with `npm run dev`, then open `http://127.0.0.1:4321`. The Astro local dev server displays the support pages, but it does not run Cloudflare Pages Functions; complete the Cloudflare setup and test the live deployment to exercise email signup.
 
-## Update your existing GitHub → Cloudflare Pages website
+## Existing content and unfinished sales channels
 
-If the site is already deployed at `perennial-fallout.pages.dev`, **update the existing GitHub repository**, not a new Cloudflare project. Replace the existing repository files with this version (keep its `.git` folder when using GitHub Desktop), review the changes, commit, and push to `main`. Cloudflare Pages will build and deploy automatically.
+The site still includes the band's existing content and the current placeholder actions for planned external social, merchandise, and track-purchase destinations. **No onsite payment/checkout functionality is active.** Show dates in `src/data/site.ts` were originally supplied as examples and **must be confirmed with the band before advertising or publishing reminders**. Do not treat those dates or ticket links as verified live events.
 
-Test on iPhone after the new deployment completes; refresh Safari to pick up the new styles and scripts. No backend configuration changes are required.
+Footer support pages describe the current site's real practices rather than claiming checkout is already operational. The policies should be reviewed by the band's owner and, if needed, qualified counsel before going live, especially when future direct sales, shipping, analytics, or marketing are added.
 
-## Publish from GitHub to Cloudflare Pages
+## GitHub and Cloudflare deployment
 
-1. Create a new repository (for example `perennial-fallout-website`).
-2. Commit **the contents of this folder**, not the outer ZIP, using GitHub Desktop or Git. Keep `src/`, `public/`, `package.json`, `package-lock.json`, `astro.config.mjs`, `tsconfig*.json`, `.gitignore` and `README.md`.
-3. In Cloudflare's dashboard, go to **Workers & Pages**, create a **Pages** project, and connect the GitHub repository.
-4. Configure:
+Copy the package contents into the existing **Cloudflare-connected** GitHub repository, keeping its `.git/` folder. Commit and push to the production branch. Do not create a second Cloudflare project. Build command: `npm run build`. Output: `dist`. Framework preset: Astro. Keep the `functions/` directory in Git to deploy serverless APIs.
 
-   | Setting | Value |
-   | --- | --- |
-   | Framework preset | Astro |
-   | Production branch | `main` |
-   | Build command | `npm run build` |
-   | Build output directory | `dist` |
-   | Root directory | repository root (`/`) |
-
-5. Deploy. Later GitHub commits to `main` will trigger new deployments.
-
-For a manual upload of static output *instead* of Git deployment, build locally and upload **the contents of `dist/`**, not this source tree.
-
-## Project map
-
-- `src/pages/index.astro`: homepage
-- `src/components/`: header, hero, music player, shows, band, newsletter and footer
-- `src/layouts/`: document metadata, common styles and fonts
-- `src/styles/`: original styling and version overrides (preserved to avoid changing the design)
-- `src/scripts/`: TypeScript behavior, animation, audio preview, navigation and calendars
-- `src/data/site.ts`: editable site content and external destinations
-- `public/assets/`: the website's images, audio, icons and background textures (keep in Git)
-- `START_WEBSITE.bat`: Windows local-development convenience launcher (Cloudflare does not execute it)
-
-## Cleanup notes
-
-Only required source files, assets, project configuration, lockfile and documentation are included. Generated `dist/`, `dist-preview/`, `.astro/` and `node_modules/` are excluded. Run `npm ci` to recreate dependencies. The v1.7 edits are isolated to the hero composition, audio-seeking behavior, and hero grain. Other design elements are unchanged.
-
-## Future integrations
-
-Sanity CMS, Stripe, Cloudflare R2/Workers and a newsletter provider are **not configured**. The homepage currently uses static data and placeholders for these integrations.
-
-## Confirm the live v1.7.1 deployment (important)
-
-The GitHub repository inspected during this update still showed `package.json` version `1.6.0` and did **not** include `src/styles/v1.7.css`. This indicates the existing live site may not have received the previous v1.7 update. The ZIP alone does not update Cloudflare.
-
-1. Copy **all contents** of this package into the same local folder that GitHub Desktop uses for the Cloudflare-connected repository, preserving the `.git` folder.
-2. In GitHub Desktop, verify that `package.json` now contains `"version": "1.7.1"` and there are new `src/styles/v1.7.css` and `src/styles/v1.7.1.css` files.
-3. Commit the changes and click **Push origin**. Cloudflare Pages will deploy automatically from `main` if configured correctly.
-4. In Cloudflare Pages → Deployments, confirm the latest build says **Success** and its commit matches the pushed commit.
-5. Visit the live site and use **View Page Source** on desktop: search for `<meta name="application-version" content="1.7.1">` (Astro may reorder attributes). This is a nonvisual marker for checking the deployed version. On iPhone, reopen the website in a private tab after Cloudflare deployment finishes.
-
-This release keeps the 60/40 mobile stage, v1.7 seek handling and grain level, and all other original design elements. The mobile portrait is newly cropped from the supplied art with no retouching of any face.
-
-## v1.7.2 note — mobile hero framing
-
-The photo on mobile now fills the **entire viewport width** at its original aspect ratio, instead of being zoomed into a cropped picture stage. The hero stage still occupies 60svh and starts the player below it. On short screens, the bottom fade can conceal lower smoke but the band is not stretched or cropped horizontally. This release preserves the v1.7.1 playback fixes. The deployment version marker is `1.7.2`.
-
-## v1.7.5 — Share and member names
-
-Band captions are now uppercase, and the **bearded guitarist is CHAD**. The hero player now has a **SHARE** action that offers native sharing on iOS/Android when available, or a clipboard copy of the website's `#music` link on desktop. The live site must be on HTTPS for native sharing and modern clipboard APIs. Nothing else about the v1.7.2 layout or player seeking was changed. The deployment marker and package versions read `1.7.5`.
+The package deliberately **excludes** `node_modules`, `.git`, generated `dist/`, subscriber exports, and API secrets. The `START_WEBSITE.bat` is optional for local development, not used by Cloudflare. The original photos, audio track and other assets must be licensed/authorized for public use.

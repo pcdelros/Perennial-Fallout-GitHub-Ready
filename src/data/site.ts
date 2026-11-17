@@ -24,7 +24,7 @@ export const siteConfig: SiteConfig = {
   artist: 'Perennial Fallout',
   audioPath: '/assets/audio/the-way.mp3',
   buyTrackUrl: '',
-  newsletterEndpoint: '', // Will be handled by a future Cloudflare Worker, not in this release.
+  newsletterEndpoint: '/api/newsletter', // Cloudflare Pages Function (requires D1, Resend and Turnstile setup).
   socials: { Spotify: '', 'Apple Music': '', YouTube: '', Facebook: '' },
   // Sample shows: VERIFY with the band before publishing or sharing reminders.
   shows: [

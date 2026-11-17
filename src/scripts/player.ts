@@ -1,4 +1,5 @@
 import { get, reduced } from './dom';
+import { readMusicPreferences, saveMusicPreferences } from './preferences';
 
 /** One 45-second preview starting 3:03 from the end of the track.
  *  Seeking preserves the previous play/pause state across desktop and iOS Safari. */
@@ -187,17 +188,26 @@ export function initPlayer(): void {
   get<HTMLButtonElement>('#previous').addEventListener('click', restart);
   get<HTMLButtonElement>('#next').addEventListener('click', restart);
   const repeat = get<HTMLButtonElement>('#repeat');
+  const savedSettings = readMusicPreferences();
+  if (savedSettings?.repeat) {
+    audio.loop = true;
+    repeat.classList.add('is-on');
+    repeat.setAttribute('aria-pressed', 'true');
+    repeat.setAttribute('aria-label', 'Disable repeat');
+  }
+  const rememberSettings = () => saveMusicPreferences({ volume: audio.volume, repeat: audio.loop });
   repeat.addEventListener('click', () => {
     audio.loop = !audio.loop;
     repeat.classList.toggle('is-on', audio.loop);
     repeat.setAttribute('aria-pressed', String(audio.loop));
     repeat.setAttribute('aria-label', audio.loop ? 'Disable repeat' : 'Enable repeat');
+    rememberSettings();
   });
   const volumeBox = get<HTMLElement>('#volume-control');
   const volumeButton = get<HTMLButtonElement>('#mute');
   const volumePanel = get<HTMLElement>('#volume-panel');
   const slider = get<HTMLInputElement>('#volume-range');
-  audio.volume = 0.75;
+  audio.volume = savedSettings?.volume ?? 0.75;
   function syncVolume(): void {
     const effective = audio.muted ? 0 : Math.round(audio.volume * 100);
     slider.value = String(effective);
@@ -216,6 +226,7 @@ export function initPlayer(): void {
     audio.volume = Number(slider.value) / 100;
     audio.muted = audio.volume === 0;
     syncVolume();
+    rememberSettings();
   });
   audio.addEventListener('volumechange', syncVolume);
   document.addEventListener('pointerdown', event => {

@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.8.3 — Newsletter integration and Support pages
+
+- Added complete Purchase Terms, Privacy Policy, Terms of Use, and Cookie Preferences pages, linked from the existing footer.
+- New branded support layout, responsive page navigation and working music player preference controls.
+- Cloudflare Pages Functions implement double opt-in newsletter signup, Resend confirmation/welcome emails, Gmail notifications and unsubscribe. D1 migration and deployment guide included. The integration requires production Cloudflare and Resend configuration to send messages.
+- Kept the approved homepage layout, media, animation and existing button styles; newsletter button is uppercase **SUBSCRIBE**.
+
+
 ## v1.8.1
 
 - **Desktop hero:** Fade the upper edge of the actual artwork into the black page background while retaining the previously approved side fades. This removes the hard horizontal seam visible behind the desktop navigation.
