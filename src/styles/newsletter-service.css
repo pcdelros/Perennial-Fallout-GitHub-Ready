@@ -1,13 +1,72 @@
-/* v1.8.2 — functionality-only support. Does not alter the original form dimensions. */
-.newsletter-form .cf-turnstile { flex-basis: 100%; display:flex; justify-content:center; }
-.newsletter-content .newsletter-consent { font-size:12px !important; line-height:1.5 !important; margin:14px auto 0 !important; max-width:460px; color:#d7bfc6 !important; }
-.newsletter-consent a { color:#f1dadd; text-decoration:underline; text-underline-offset:2px; }
-.newsletter-consent a:hover { color:#fff; }
-.newsletter-form button:disabled { opacity:.7; cursor:wait; }
-@media (max-width:767px) { .newsletter-content .newsletter-consent { font-size:12px !important; } }
+/* v1.8.4 — newsletter signup layout + support styles. */
 
-/* Match the typography of the player, show, and band action buttons. */
-.newsletter-form .pill { text-transform: uppercase; font-weight: 700; letter-spacing: .08em; }
+/* Keep the email field and subscribe button on the first row,
+   and force the Turnstile widget onto its own row. */
+.newsletter-form {
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 12px;
+}
 
-.newsletter-form .newsletter-honeypot { position:absolute!important;left:-10000px!important;width:1px!important;height:1px!important;opacity:0!important;pointer-events:none!important;}
-.newsletter-form .newsletter-honeypot { min-width:0!important; flex:none!important; margin:0!important; padding:0!important; border:0!important; }
+.newsletter-form input[type="email"] {
+  flex: 1 1 240px;
+  min-width: 240px;
+}
+
+.newsletter-form .pill {
+  flex: 0 0 auto;
+  text-transform: uppercase;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.newsletter-form .cf-turnstile {
+  flex: 1 0 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.newsletter-content .newsletter-consent {
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  margin: 14px auto 0 !important;
+  max-width: 460px;
+  color: #d7bfc6 !important;
+}
+
+.newsletter-consent a {
+  color: #f1dadd;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.newsletter-consent a:hover { color: #fff; }
+.newsletter-form button:disabled { opacity: .7; cursor: wait; }
+
+.newsletter-form .newsletter-honeypot {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  min-width: 0 !important;
+  flex: none !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .newsletter-form input[type="email"] {
+    min-width: 100%;
+  }
+
+  .newsletter-form .pill {
+    width: 100%;
+  }
+
+  .newsletter-content .newsletter-consent {
+    font-size: 12px !important;
+  }
+}
