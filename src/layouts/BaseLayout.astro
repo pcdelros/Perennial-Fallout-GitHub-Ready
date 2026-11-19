@@ -1,4 +1,5 @@
 ---
+import { version } from '../../package.json';
 import '../styles/global.css';
 import '../styles/updates.css';
 import '../styles/v1.5.css';
@@ -11,8 +12,13 @@ import '../styles/v1.8.css';
 import '../styles/v1.8.1.css';
 import '../styles/newsletter-service.css';
 import '../styles/support.css';
-interface Props { title?: string; description?: string; }
-const { title = 'Perennial Fallout — Official Website', description = 'Perennial Fallout: music, shows and the band.' } = Astro.props;
+import '../styles/v1.10.css';
+import '../styles/v1.10.1.css';
+import '../styles/v1.10.2.css';
+import '../styles/v1.10.3.css';
+import '../styles/v1.10.4.css';
+interface Props { title?: string; description?: string; localFonts?: boolean; }
+const { title = 'Perennial Fallout — Official Website', description = 'Perennial Fallout: music, shows and the band.', localFonts = false } = Astro.props;
 ---
 <!doctype html>
 <html lang="en">
@@ -20,13 +26,16 @@ const { title = 'Perennial Fallout — Official Website', description = 'Perenni
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#0b0b0d" />
-<meta name="application-version" content="1.8.3" />
+<meta name="application-version" content={version} />
 <meta name="description" content={description} />
 <title>{title}</title>
 <link rel="icon" href="/assets/icons/logo.svg" type="image/svg+xml" />
+<slot name="head" />
+{!localFonts && <>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Metal+Mania&display=swap" rel="stylesheet" />
+</>}
 </head>
 <body><slot /></body>
 </html>

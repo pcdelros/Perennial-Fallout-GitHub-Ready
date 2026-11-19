@@ -1,0 +1,216 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Header from '../../components/Header.astro';
+import Footer from '../../components/Footer.astro';
+import Disclosure from '../../components/epk/Disclosure.astro';
+import Lineup from '../../components/epk/Lineup.astro';
+import Sound from '../../components/epk/Sound.astro';
+import Resources from '../../components/epk/Resources.astro';
+import content from '../../data/epk.json';
+import '../../styles/epk.css';
+import '../../styles/v1.10.1.css';
+import '../../styles/v1.10.2.css';
+import '../../styles/v1.10.3.css';
+import '../../styles/v1.10.4.css';
+
+const title = 'Perennial Fallout | EPK / Press Kit';
+const description = 'Official Perennial Fallout electronic press kit: music, band biography, lineup, press photography, downloads, and booking contact.';
+const canonical = new URL('/epk/', content.website);
+const shareImage = new URL('/assets/epk/perennial-fallout-social.jpg', content.website);
+---
+<BaseLayout {title} {description} localFonts>
+  <Fragment slot="head">
+    <link rel="canonical" href={canonical} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Perennial Fallout" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:image" content={shareImage.href} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="675" />
+    <meta property="og:image:alt" content="Perennial Fallout band promotional image" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="preload" as="font" type="font/woff" href="/assets/fonts/metal-mania-latin-400-normal.woff" crossorigin />
+  </Fragment>
+
+  <div class="press-page" id="top">
+    <a class="skip-link" href="#epk-main">Skip to EPK</a>
+    <Header />
+    <main id="epk-main">
+      <section class="press-hero press-parallax" aria-labelledby="press-title">
+        <div class="press-hero-content content-wrap">
+          <div class="press-hero-grid">
+            <div class="press-hero-visual">
+              <div class="press-hero-card-shell">
+                <div class="press-hero-card" id="press-hero-card">
+                  <img src={content.groupPhoto} width="1130" height="1392" fetchpriority="high" alt="Perennial Fallout promotional band photo" />
+                </div>
+              </div>
+            </div>
+            <div class="press-hero-copy">
+              <p class="press-overline">OFFICIAL ELECTRONIC PRESS KIT</p>
+              <h1 id="press-title"><span>PERENNIAL</span> <span>FALLOUT</span></h1>
+              <p class="press-hero-genre">{content.genre}</p>
+              <p class="press-hero-description">Music, photos and information for press, promoters and venues.</p>
+              <div class="press-hero-actions">
+                <a class="pill pill-solid" href="/press/perennial-fallout-press-assets.zip" download>DOWNLOAD PRESS KIT</a>
+                <a class="pill pill-outline" href="#sound">LISTEN TO THE WAY</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="press-info-bar textured press-parallax" aria-label="Band overview">
+        <div class="content-wrap press-info-inner">
+          <p><span>EST.</span><strong>{content.formed}</strong></p>
+          <p><span>GENRE</span><strong>{content.genre}</strong></p>
+          <p><span>FEATURED SINGLE</span><strong>THE WAY</strong></p>
+        </div>
+      </div>
+
+      <section class="press-section press-about press-panel press-parallax content-wrap" id="about" aria-labelledby="about-title">
+        <div class="press-section-heading">
+          <span class="press-overline">01 / THE STORY</span>
+          <h2 id="about-title">ABOUT THE BAND</h2>
+        </div>
+        <div class="press-copy">
+          <p>Formed in {content.formed}, Perennial Fallout brings together hard rock, alternative metal, grunge and funk-influenced grooves. Heavy guitars, driving rhythms and direct lyrics are at the center of the band’s sound.</p>
+          <p>{content.shortBio[1]}</p>
+          <Disclosure label="READ FULL BIO">{content.fullBio.map(paragraph => <p>{paragraph}</p>)}</Disclosure>
+        </div>
+      </section>
+
+      <Sound />
+      <Lineup />
+      <Resources />
+
+      <section class="press-contact textured press-parallax" id="contact" aria-labelledby="contact-title">
+        <div class="press-contact-inner content-wrap">
+          <p class="press-overline">BOOKING / PRESS / INQUIRIES</p>
+          <h2 id="contact-title">GET IN TOUCH</h2>
+          <p>For show bookings, press requests or anything else about the band, contact us directly.</p>
+          <a class="press-contact-email" href={`mailto:${content.bookingEmail}`}>{content.bookingEmail}</a>
+        </div>
+      </section>
+    </main>
+    <Footer />
+  </div>
+  <script>
+    import { initNavigation } from '../../scripts/navigation';
+    const initialize = () => {
+      initNavigation();
+      const header = document.getElementById('site-header');
+      const audio = document.querySelector<HTMLAudioElement>('#press-audio');
+      const button = document.querySelector<HTMLButtonElement>('#nav-audio');
+      const error = document.getElementById('press-audio-error');
+      const refreshHeader = () => header?.classList.toggle('is-scrolled', window.scrollY > 32);
+      window.addEventListener('scroll', refreshHeader, { passive: true });
+      refreshHeader();
+      if (audio && button) {
+        const updateButton = () => {
+          const playing = !audio.paused && !audio.ended;
+          button.classList.toggle('is-playing', playing);
+          button.setAttribute('aria-pressed', String(playing));
+          button.setAttribute('aria-label', playing ? 'Pause music' : 'Play music');
+          button.title = playing ? 'Pause music' : 'Play music';
+        };
+        button.addEventListener('click', async () => {
+          if (!audio.paused) audio.pause();
+          else {
+            if (audio.ended) audio.currentTime = 0;
+            try { await audio.play(); }
+            catch { if (error) { error.hidden = false; error.textContent = 'Unable to play the preview. Please try again.'; } }
+          }
+        });
+        for (const event of ['play', 'pause', 'ended']) audio.addEventListener(event, updateButton);
+        audio.addEventListener('error', () => { if (error) error.hidden = false; });
+        audio.addEventListener('loadeddata', () => { if (error) error.hidden = true; });
+        updateButton();
+      }
+      const heroCard = document.getElementById('press-hero-card');
+      if (heroCard && window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+        const resetHeroCard = () => {
+          heroCard.style.setProperty('--card-rotate-x', '0deg');
+          heroCard.style.setProperty('--card-rotate-y', '0deg');
+          heroCard.style.setProperty('--card-shift-x', '0px');
+          heroCard.style.setProperty('--card-shift-y', '0px');
+        };
+        heroCard.addEventListener('pointermove', event => {
+          const rect = heroCard.getBoundingClientRect();
+          const px = (event.clientX - rect.left) / rect.width;
+          const py = (event.clientY - rect.top) / rect.height;
+          heroCard.style.setProperty('--card-rotate-y', `${((px - 0.5) * 10).toFixed(2)}deg`);
+          heroCard.style.setProperty('--card-rotate-x', `${((0.5 - py) * 10).toFixed(2)}deg`);
+          heroCard.style.setProperty('--card-shift-x', `${((px - 0.5) * 18).toFixed(1)}px`);
+          heroCard.style.setProperty('--card-shift-y', `${((py - 0.5) * 18).toFixed(1)}px`);
+        });
+        heroCard.addEventListener('pointerleave', resetHeroCard);
+        resetHeroCard();
+      }
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      const parallaxSections = [...document.querySelectorAll<HTMLElement>('.press-parallax')];
+      const motion = parallaxSections.map(element => ({ element, value: 0, initialized: false }));
+      let parallaxFrame = 0;
+      let parallaxLast = 0;
+      const applyParallax = (section: HTMLElement, progress: number) => {
+        section.style.setProperty('--depth-shift', `${(progress * 224).toFixed(1)}px`);
+        section.style.setProperty('--depth-x', `${(progress * -56).toFixed(1)}px`);
+        section.style.setProperty('--depth-angle', `${(progress * 4).toFixed(2)}deg`);
+        section.style.setProperty('--depth-yaw', `${(progress * -3).toFixed(2)}deg`);
+      };
+      const animateParallax = (now: number) => {
+        parallaxFrame = 0;
+        if (reducedMotion.matches || document.hidden) return;
+        const dt = Math.min(64, Math.max(0, now - (parallaxLast || now)));
+        const ease = 1 - Math.exp(-dt / 280);
+        parallaxLast = now;
+        let stillMoving = false;
+        for (const item of motion) {
+          const rect = item.element.getBoundingClientRect();
+          if (rect.bottom < -150 || rect.top > window.innerHeight + 150) continue;
+          const normalized = (rect.top + rect.height / 2 - window.innerHeight / 2) / (window.innerHeight + rect.height);
+          const target = Math.max(-1, Math.min(1, normalized));
+          if (!item.initialized) {
+            item.initialized = true;
+            item.value = target;
+          }
+          const delta = target - item.value;
+          item.value += delta * ease;
+          if (Math.abs(delta) > 0.0005) stillMoving = true;
+          applyParallax(item.element, item.value);
+        }
+        if (stillMoving) parallaxFrame = requestAnimationFrame(animateParallax);
+      };
+      const scheduleParallax = () => {
+        if (reducedMotion.matches) {
+          for (const item of motion) applyParallax(item.element, 0);
+          return;
+        }
+        if (!parallaxFrame && !document.hidden) parallaxFrame = requestAnimationFrame(animateParallax);
+      };
+      window.addEventListener('scroll', scheduleParallax, { passive: true });
+      window.addEventListener('resize', () => {
+        for (const item of motion) item.initialized = false;
+        scheduleParallax();
+      }, { passive: true });
+      document.addEventListener('visibilitychange', scheduleParallax);
+      reducedMotion.addEventListener('change', scheduleParallax);
+      scheduleParallax();
+      // Print expanded bios; then restore exactly the panels that were closed.
+      let openedForPrint: HTMLDetailsElement[] = [];
+      window.addEventListener('beforeprint', () => {
+        openedForPrint = [...document.querySelectorAll<HTMLDetailsElement>('.press-disclosure:not([open])')];
+        for (const panel of openedForPrint) panel.open = true;
+      });
+      window.addEventListener('afterprint', () => {
+        for (const panel of openedForPrint) panel.open = false;
+        openedForPrint = [];
+      });
+    };
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', initialize, { once: true });
+    else initialize();
+  </script>
+</BaseLayout>

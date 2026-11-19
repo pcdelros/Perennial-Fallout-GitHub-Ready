@@ -1,0 +1,10 @@
+---
+interface Props { name: 'download' | 'play' | 'chevron' | 'external'; }
+const { name } = Astro.props;
+---
+<svg class="press-icon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+  {name === 'download' && <path d="M12 3v12m-5-5 5 5 5-5M4 16v4h16v-4" />}
+  {name === 'play' && <path d="m8 5 11 7-11 7z" />}
+  {name === 'chevron' && <path d="m6 9 6 6 6-6" />}
+  {name === 'external' && <path d="M13 4h7v7m-1-6-9 9M10 5H5v14h14v-5" />}
+</svg>

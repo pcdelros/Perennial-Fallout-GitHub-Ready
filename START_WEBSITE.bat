@@ -30,7 +30,6 @@ if not exist "node_modules\astro\package.json" (
 echo.
 echo Starting Astro at http://127.0.0.1:4321
 echo Keep this window open; press Ctrl+C to stop the site.
-start "" "http://127.0.0.1:4321"
-call npm run dev
+call npm run dev -- --open
 if errorlevel 1 pause
 endlocal

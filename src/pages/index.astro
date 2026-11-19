@@ -6,6 +6,7 @@ import Shows from '../components/Shows.astro';
 import Band from '../components/Band.astro';
 import Newsletter from '../components/Newsletter.astro';
 import Footer from '../components/Footer.astro';
+import { siteConfig } from '../data/site';
 ---
 <BaseLayout>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -14,7 +15,7 @@ import Footer from '../components/Footer.astro';
   <Hero />
   <Shows />
   <Band />
-  <Newsletter />
+  {siteConfig.shows.length > 0 && <Newsletter />}
 </main>
 <Footer />
 <div class="coming-soon-layer" id="coming-soon-layer" aria-hidden="true"></div>

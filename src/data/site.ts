@@ -1,3 +1,5 @@
+import members from './members.json';
+
 /** Content is centralized here until the planned Sanity CMS integration is connected. */
 export interface Show {
   venue: string;
@@ -23,20 +25,10 @@ export const siteConfig: SiteConfig = {
   songTitle: 'The Way',
   artist: 'Perennial Fallout',
   audioPath: '/assets/audio/the-way.mp3',
-  buyTrackUrl: '',
+  buyTrackUrl: 'https://perennial-fallout-shop.fourthwall.com/',
   newsletterEndpoint: '/api/newsletter', // Cloudflare Pages Function (requires D1, Resend and Turnstile setup).
   socials: { Spotify: '', 'Apple Music': '', YouTube: '', Facebook: '' },
-  // Sample shows: VERIFY with the band before publishing or sharing reminders.
-  shows: [
-    { venue: 'The Rebel Lounge', date: 'November 12, 2026', city: 'Phoenix, AZ', time: '8:00 PM – 10:00 PM', ticketsUrl: '', start: '2026-11-12T20:00:00-07:00', end: '2026-11-12T22:00:00-07:00' },
-    { venue: 'The Van Buren', date: 'December 6, 2026', city: 'Phoenix, AZ', time: '8:00 PM – 10:00 PM', ticketsUrl: '', start: '2026-12-06T20:00:00-07:00', end: '2026-12-06T22:00:00-07:00' },
-    { venue: 'Marquee Theatre', date: 'January 12, 2027', city: 'Tempe, AZ', time: '8:00 PM – 10:00 PM', ticketsUrl: '', start: '2027-01-12T20:00:00-07:00', end: '2027-01-12T22:00:00-07:00' }
-  ],
-  members: [
-    { name: 'DONNIE', role: 'Drums', image: '/assets/images/member-drums.webp', alt: 'Drummer performing on stage' },
-    { name: 'PETER', role: 'Guitar', image: '/assets/images/member-guitar-1.webp', alt: 'Guitarist performing on stage' },
-    { name: 'CLINT', role: 'Vocalist', image: '/assets/images/member-vocalist.webp', alt: 'Vocalist singing on stage' },
-    { name: 'CHAD', role: 'Guitar', image: '/assets/images/member-guitar-2.webp', alt: 'Guitarist playing a guitar' },
-    { name: 'ODIN', role: 'Bass', image: '/assets/images/member-bass.webp', alt: 'Bass player performing on stage' }
-  ]
+  // Add only confirmed appearances here. When empty, Shows displays the signup state.
+  shows: [],
+  members
 };

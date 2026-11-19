@@ -26,12 +26,12 @@ export function initNewsletter(): void {
     }
     const turnstile = window.turnstile;
     if (!turnstile) {
-      status.textContent = 'Security verification is still loading. Please try again.';
+      status.textContent = 'Security check could not load. Refresh the page; if it is still missing in Safari, temporarily disable content blockers for this website and try again.';
       return;
     }
     const token = turnstile.getResponse();
     if (!token) {
-      status.textContent = 'Please complete the security check and try again.';
+      status.textContent = 'Security verification is not complete yet. If the check is missing, refresh the page or temporarily disable Safari content blockers for this site.';
       return;
     }
     button.disabled = true;

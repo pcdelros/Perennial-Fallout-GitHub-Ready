@@ -1,0 +1,12 @@
+---
+import PressIcon from './PressIcon.astro';
+interface Props { label: string; context?: string; }
+const { label, context } = Astro.props;
+---
+<details class="press-disclosure">
+  <summary>
+    <span>{label}{context && <span class="sr-only"> for {context}</span>}</span>
+    <PressIcon name="chevron" />
+  </summary>
+  <div class="press-detail"><slot /></div>
+</details>

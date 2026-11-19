@@ -1,0 +1,23 @@
+---
+import content from '../../data/epk.json';
+import { siteConfig } from '../../data/site';
+---
+<section class="press-sound-section press-panel press-parallax content-wrap" id="sound" aria-labelledby="sound-title">
+  <div class="press-section-heading">
+    <span class="press-overline">02 / THE MUSIC</span>
+    <h2 id="sound-title">THE SOUND</h2>
+    <p>Hard rock. Alternative metal. Heavy grooves.</p>
+    <p class="press-influences">Influences include {content.influences.slice(0, 5).join(' / ')}.</p>
+  </div>
+  <div class="press-track">
+    <img class="press-track-art" src="/assets/epk/the-way-art.webp" width="176" height="176" alt="Artwork for The Way" loading="lazy" decoding="async" />
+    <div class="press-track-body">
+      <p class="press-overline">FEATURED SINGLE · 45-SECOND PREVIEW</p>
+      <h3>{siteConfig.songTitle}</h3>
+      <p>Perennial Fallout</p>
+      <audio id="press-audio" controls preload="metadata" controlslist="nodownload" aria-label="The Way, 45-second music preview" src={siteConfig.audioPath}></audio>
+      <p class="press-track-error" hidden role="status" id="press-audio-error">The preview couldn’t load. Refresh the page to try again.</p>
+      <a class="pill pill-outline" href={siteConfig.buyTrackUrl} target="_blank" rel="noopener noreferrer">BUY TRACK <span class="sr-only">(opens Fourthwall in a new tab)</span></a>
+    </div>
+  </div>
+</section>

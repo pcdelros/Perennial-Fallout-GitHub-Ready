@@ -1,0 +1,32 @@
+[
+  {
+    "name": "DONNIE",
+    "role": "Drums",
+    "image": "/assets/images/member-drums.webp",
+    "alt": "Drummer performing on stage"
+  },
+  {
+    "name": "PETE",
+    "role": "Guitar",
+    "image": "/assets/images/member-guitar-1.webp",
+    "alt": "Guitarist performing on stage"
+  },
+  {
+    "name": "CLINT",
+    "role": "Vocalist",
+    "image": "/assets/images/member-vocalist.webp",
+    "alt": "Vocalist singing on stage"
+  },
+  {
+    "name": "CHAD",
+    "role": "Guitar",
+    "image": "/assets/images/member-guitar-2.webp",
+    "alt": "Guitarist playing a guitar"
+  },
+  {
+    "name": "ODIN",
+    "role": "Bass",
+    "image": "/assets/images/member-bass.webp",
+    "alt": "Bass player performing on stage"
+  }
+]

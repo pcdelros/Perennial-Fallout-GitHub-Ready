@@ -1,0 +1,44 @@
+/* Perennial Fallout v1.10.4 — restore EPK castle scenery and horizontal desktop title. */
+/* v1.10.3 unintentionally replaced the existing illustrated texture with grain.
+   Restore the approved original art; keep the 3D scroll perspective on the plane. */
+.press-page .press-hero::before {
+  background-image:
+    radial-gradient(circle at 24% 28%, rgba(116,16,37,.16), transparent 43%),
+    url('/assets/textures/desktop-5.webp');
+  background-position:center center, center 44%;
+  background-size:cover,cover;
+  background-repeat:no-repeat;
+  opacity:.48;
+  mix-blend-mode:screen;
+}
+/* Gradient adds readable contrast without concealing the castle. */
+.press-page .press-hero::after {
+  background:linear-gradient(90deg,rgba(5,4,6,.20),rgba(5,4,6,.34) 52%,rgba(5,4,6,.48)),
+             linear-gradient(180deg,rgba(5,4,6,.42),transparent 24%,transparent 70%,rgba(5,4,6,.56));
+}
+/* Keep one natural line in all desktop widths, with responsive font sizing
+   based on the available column width rather than an artificial line break. */
+@media(min-width:761px){
+  .press-page .press-hero-copy h1 {
+    font-size:clamp(36px,3.75vw,62px);
+    line-height:1.14;
+    white-space:nowrap;
+    letter-spacing:0;
+  }
+  .press-page .press-hero-copy h1 span {display:inline;}
+}
+/* On narrow screens the familiar two-line treatment remains intentional. */
+@media(max-width:760px){
+  .press-page .press-hero::before {
+    background-image:url('/assets/textures/mobile-5.webp');
+    background-position:center 42%;
+    background-size:cover;
+    opacity:.35;
+  }
+  .press-page .press-hero-copy h1{white-space:normal;}
+  .press-page .press-hero-copy h1 span{display:block;}
+}
+@media print {
+  .press-page .press-hero::before,.press-page .press-hero::after{display:none!important;}
+  .press-page .press-hero-copy h1 {white-space:normal;}
+}

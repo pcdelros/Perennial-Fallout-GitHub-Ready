@@ -1,0 +1,55 @@
+/* v1.10.3 — self-sizing EPK hero and balanced no-shows section. */
+/* Allow the photo, copy and BOTH CTAs to determine the hero's total height.
+   The original fixed height and flex shrink-to-fit produced the clipped CTA. */
+.press-page .press-hero {
+  height:auto; min-height:0; display:block; overflow:hidden;
+  padding:calc(var(--header-height) + 44px) 0 88px;
+  background:#050507;
+}
+.press-page .press-hero-content {
+  display:block; width:min(calc(100% - 64px),1240px); max-width:1240px;
+  height:auto; margin-inline:auto; padding:0; position:relative;
+}
+.press-page .press-hero-grid {
+  display:grid; width:100%; min-width:0;
+  grid-template-columns:minmax(0,0.94fr) minmax(0,1.06fr);
+  align-items:center; column-gap:clamp(36px,6vw,88px);
+}
+.press-page .press-hero-copy { width:100%; max-width:560px; min-width:0; padding:0; }
+.press-page .press-hero-actions {display:flex;flex-wrap:wrap;gap:12px;justify-content:flex-start;}
+.press-page .press-hero-card-shell {width:min(100%,440px);margin-inline:auto}
+/* Dark atmosphere rather than a large grayscale illustrated backdrop. */
+.press-page .press-hero::before {
+  background:radial-gradient(circle at 26% 34%,rgba(139,24,48,.42),transparent 44%),
+    radial-gradient(circle at 82% 62%,rgba(103,20,37,.19),transparent 39%),
+    url('/assets/textures/grain-tile.webp') center / 220px repeat;
+  opacity:.31;
+  mix-blend-mode:screen;
+}
+/* The no-shows section uses equal section gutters, on both desktop and mobile. */
+.shows-is-empty .shows-inner {padding-top:96px; padding-bottom:96px;}
+.shows-is-empty .shows-empty {padding-top:0;}
+@media(max-width:1120px) and (min-width:761px) {
+  .press-page .press-hero-grid {grid-template-columns:minmax(0,1fr) minmax(0,1fr);column-gap:36px}
+  .press-page .press-hero-card-shell{width:min(100%,390px)}
+  .press-page .press-hero-copy h1{font-size:clamp(42px,5vw,58px)}
+}
+@media(max-width:760px) {
+  .press-page .press-hero {padding:calc(var(--header-height) + 40px) 0 64px!important;}
+  .press-page .press-hero-content {width:calc(100% - 48px);text-align:center;margin-top:0;}
+  .press-page .press-hero-grid {grid-template-columns:minmax(0,1fr);gap:24px;}
+  .press-page .press-hero-card-shell {width:min(100%,304px);margin-top:0;}
+  .press-page .press-hero-copy {width:100%;max-width:360px;margin:0 auto;padding:0;}
+  .press-page .press-hero-actions {justify-content:center;}
+  .shows-is-empty .shows-inner {padding-top:76px; padding-bottom:76px;}
+}
+@media(max-width:360px) {
+  .press-page .press-hero-content {width:calc(100% - 32px);}
+  .press-page .press-hero-card-shell {width:min(100%,280px);}
+}
+@media print {
+  .press-page .press-hero {padding:0!important;background:#fff!important;}
+  .press-page .press-hero-grid {display:block;}
+  .press-page .press-hero-visual {display:none;}
+  .press-page .press-hero-copy {max-width:none;text-align:left;}
+}

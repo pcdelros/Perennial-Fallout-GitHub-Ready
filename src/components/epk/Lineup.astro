@@ -1,0 +1,39 @@
+---
+import content from '../../data/epk.json';
+import { siteConfig } from '../../data/site';
+import Disclosure from './Disclosure.astro';
+
+const portraits = new Map(siteConfig.members.map(member => [member.name, member.image]));
+const lineup = content.members.map(member => {
+  const image = portraits.get(member.siteName);
+  if (!image) throw new Error(`Missing press portrait for ${member.name}`);
+  const thumbnail = image.replace('/assets/images/', '/assets/epk/').replace('.webp', '-480.webp');
+  return { ...member, image, thumbnail };
+});
+---
+<section class="press-lineup-section textured press-parallax" id="lineup" aria-labelledby="lineup-title">
+  <div class="content-wrap">
+    <div class="press-section-heading press-center">
+      <span class="press-overline">03 / THE PEOPLE</span>
+      <h2 id="lineup-title">MEET THE BAND</h2>
+    </div>
+    <div class="press-lineup">
+      {lineup.map(member => (
+        <article class="press-member">
+          <div class="press-member-photo">
+            <img src={member.thumbnail} srcset={`${member.thumbnail} 480w, ${member.image} 1024w`}
+              sizes="(max-width: 600px) 44vw, (max-width: 900px) 31vw, 18vw"
+              width="1024" height="1536" loading="lazy" decoding="async"
+              alt={`${member.name}, ${member.instrument} for Perennial Fallout`} />
+          </div>
+          <div class="press-member-info">
+            <h3>{member.name}</h3>
+            <p>{member.instrument}</p>
+            <p class="press-member-bio">{member.bio}</p>
+            <Disclosure label="READ BIO" context={member.name}><p>{member.bio}</p></Disclosure>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

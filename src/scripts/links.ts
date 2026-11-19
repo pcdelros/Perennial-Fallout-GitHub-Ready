@@ -27,8 +27,7 @@ export function destination(url: string | undefined, origin: HTMLElement): void 
 }
 export function initLinks(): void {
   all<HTMLButtonElement>('[data-coming-soon]').forEach(button => button.addEventListener('click', () => {
-    const type = button.dataset.comingSoon;
-    destination(type === 'Track purchases' ? siteConfig.buyTrackUrl : '', button);
+    destination('', button);
   }));
   initShare();
   all<HTMLButtonElement>('[data-social]').forEach(button => button.addEventListener('click', () => destination(siteConfig.socials[button.dataset.social ?? ''], button)));

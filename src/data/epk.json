@@ -1,0 +1,94 @@
+{
+  "website": "https://perennialfallout.com",
+  "bookingEmail": "perennialfallout@gmail.com",
+  "genre": "Hard Rock / Alternative Metal",
+  "formed": 2023,
+  "shortBio": [
+    "Perennial Fallout is a hard rock band delivering heavy riffs, powerful vocals, and meaningful lyrics that challenge listeners to think beyond the ordinary.",
+    "Combining influences from hard rock, metal, grunge, and funk, the band creates an explosive sound built on authenticity, energy, and conviction.",
+    "Whether in the studio or on stage, Perennial Fallout is committed to making music that hits hard, connects deeply, and leaves a lasting impact."
+  ],
+  "fullBio": [
+    "Perennial Fallout delivers high-energy hard rock built on crushing guitar riffs, driving rhythms, and powerful vocals that demand attention. Blending influences from hard rock, metal, grunge, and funk, the band creates music that is both aggressive and thought-provoking.",
+    "Their sound is unapologetically heavy, emotionally charged, and fueled by a passion for speaking truth through music.",
+    "More than just another hard rock band, Perennial Fallout uses music as a platform to challenge conventional thinking and inspire listeners to look beyond the surface. Their songs combine memorable hooks, explosive instrumentation, and lyrics that reflect the band's commitment to individual freedom, accountability, and social awareness.",
+    "Since forming in 2023, Perennial Fallout has focused on creating impactful music that resonates with audiences both musically and lyrically. Their mission is simple: write powerful songs, deliver unforgettable live performances, and connect with people who believe music should stand for something."
+  ],
+  "members": [
+    {
+      "siteName": "CLINT",
+      "name": "Clint",
+      "instrument": "Vocals",
+      "bio": "A poet turned lyricist, Clint brings raw emotion, conviction, and authenticity to every song. His lyrics challenge the status quo while encouraging listeners to think for themselves and seek the truth."
+    },
+    {
+      "siteName": "PETE",
+      "name": "Pete",
+      "instrument": "Lead Guitar",
+      "bio": "With many years of playing experience, Pete delivers powerful solos, memorable hooks, and dynamic songwriting. His goal is simple: inspire, uplift, and connect with people through music."
+    },
+    {
+      "siteName": "CHAD",
+      "name": "Chad",
+      "instrument": "Rhythm Guitar",
+      "bio": "The driving force behind the band's rhythm section, Chad brings energy, precision, and a passion for creating music that resonates on a deeper level."
+    },
+    {
+      "siteName": "DONNIE",
+      "name": "Donnie",
+      "instrument": "Drums",
+      "bio": "Known for his hard-hitting style and modern metal influence, Donnie provides the relentless groove and explosive energy that powers the band's live performances."
+    },
+    {
+      "siteName": "ODIN",
+      "name": "Odin",
+      "instrument": "Bass",
+      "bio": "Delivering thunderous low end and bone-rattling riffs, Odin draws inspiration from artists ranging from Tool and Mudvayne to classic hard rock and modern metal."
+    }
+  ],
+  "genres": [
+    "Hard Rock",
+    "Alternative Metal",
+    "Grunge",
+    "Modern Rock",
+    "Funk-Influenced Groove",
+    "Heavy Guitar-Driven Music"
+  ],
+  "influences": [
+    "Shinedown",
+    "Alter Bridge",
+    "Tool",
+    "Godsmack",
+    "Sevendust",
+    "Breaking Benjamin",
+    "Alice In Chains"
+  ],
+  "mission": [
+    "Perennial Fallout believes music can be more than entertainment. It can challenge perspectives, encourage critical thinking, and bring people together through shared experiences.",
+    "Their lyrics tackle issues surrounding freedom, truth, corruption, personal responsibility, and the human condition. While their music carries a message, the band's primary focus is delivering compelling songs that connect with audiences on both an emotional and musical level."
+  ],
+  "tagline": "Turning noise into a message and a message into music.",
+  "live": {
+    "intro": "Perennial Fallout brings intensity and authenticity to every performance.",
+    "highlights": [
+      "Crushing guitar-driven rock",
+      "High-energy performances",
+      "Audience engagement",
+      "Powerful vocal delivery",
+      "A passion for connecting with fans"
+    ],
+    "closing": "The band leaves everything on the stage, creating a live experience that is energetic, memorable, and meaningful."
+  },
+  "next": {
+    "intro": "Perennial Fallout continues to write, record, and release new music while expanding its presence throughout the regional rock scene.",
+    "plans": [
+      "New single releases",
+      "Studio recording sessions",
+      "Music videos",
+      "Regional live performances",
+      "Festival opportunities",
+      "Future EP and album projects"
+    ]
+  },
+  "groupPhoto": "/assets/images/hero-band.webp"
+}

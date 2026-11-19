@@ -1,0 +1,35 @@
+/* v1.10.2 — SSFR cleanup for homepage empty state and EPK mobile/parallax fixes. */
+.song-name{display:block!important}
+
+.shows-is-empty .shows-inner{padding:56px 0 72px}
+.shows-is-empty .shows-empty{padding-top:0;width:min(100%,760px)}
+.shows-is-empty .shows-empty-label{margin-top:0}
+.shows-is-empty .newsletter-embedded.newsletter-minimal{margin-top:24px}
+@media(max-width:760px){
+  .shows-is-empty .shows-inner{padding:40px 0 60px}
+}
+
+/* EPK global polish */
+.press-member-bio{display:block!important}
+.press-member .press-disclosure{display:none!important}
+
+/* Lower the mobile EPK hero and keep the square card fully in view. */
+.press-hero{overflow:visible}
+@media(max-width:760px){
+  .press-hero{padding-top:calc(var(--header-height) + 44px)!important;padding-bottom:48px!important}
+  .press-hero-grid{gap:20px!important}
+  .press-hero-card-shell{width:min(100%,304px);margin-top:8px}
+  .press-hero-card img{object-position:center 26%}
+  .press-hero-copy{max-width:320px}
+  .press-hero-copy h1{margin:12px 0 10px!important}
+  .press-hero-description{max-width:18.5rem}
+}
+
+/* Press info bar: clean stacked mobile layout rather than split/awkward rows. */
+@media(max-width:760px){
+  .press-info-bar{margin-top:0}
+  .press-info-inner{padding:14px 0!important;grid-template-columns:1fr!important;gap:0!important}
+  .press-info-inner p{flex-direction:column!important;gap:3px!important;padding:12px 0!important;border:0!important}
+  .press-info-inner p + p{border-top:1px solid rgba(255,255,255,.14)!important;border-left:0!important}
+  .press-info-inner p:nth-child(3){grid-column:auto!important;padding-top:12px!important;justify-content:center!important}
+}

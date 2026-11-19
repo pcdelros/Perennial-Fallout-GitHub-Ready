@@ -22,7 +22,7 @@ The name `SUBSCRIBERS_DB` must match exactly. Redeploy after adding the binding.
 
 ## 3. Configure Cloudflare Turnstile (free)
 
-Cloudflare dashboard → **Turnstile** → add a widget with the hostname `perennialfallout.com` (also add any active `www`/Pages preview domains that should permit signups). Use **Managed** mode. Copy its site key and secret key separately.
+Cloudflare dashboard → **Turnstile** → add a widget with the hostname `perennialfallout.com` (also add any active `www`/Pages preview domains that should permit signups). Use **Managed** mode; the site now requests the always-visible appearance setting. Copy its site key and secret key separately.
 
 ## 4. Set Cloudflare Pages variables and secrets
 
@@ -70,6 +70,8 @@ The public pages `/newsletter/confirm/` and `/newsletter/unsubscribe/` provide t
 7. Test duplicate signups and a mistyped address. The UI should display an appropriate message without exposing account membership.
 
 ### Troubleshooting
+
+- **Turnstile missing in Safari:** The homepage now renders a visible widget (provided the public site key was present at Astro build time). Ensure `PUBLIC_TURNSTILE_SITE_KEY` is a build variable in the right Cloudflare environment, redeploy, then test Safari without content blockers for the site. The browser must be able to fetch `https://challenges.cloudflare.com/turnstile/v0/api.js`. The form continues to reject submissions that have not passed verification.
 
 - **"Signup is not available yet":** D1 binding, Resend secret, or Turnstile secret missing. Check Pages production environment configuration and redeploy.
 - **"Newsletter signup is being configured":** PUBLIC Turnstile site key missing during build. Set the build variable and redeploy.

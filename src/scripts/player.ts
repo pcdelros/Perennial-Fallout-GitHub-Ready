@@ -1,7 +1,7 @@
 import { get, reduced } from './dom';
 import { readMusicPreferences, saveMusicPreferences } from './preferences';
 
-/** One 45-second preview starting 3:03 from the end of the track.
+/** The public recording contains only the approved 45-second excerpt.
  *  Seeking preserves the previous play/pause state across desktop and iOS Safari. */
 export function initPlayer(): void {
   const audio = get<HTMLAudioElement>('#featured-audio');
@@ -10,9 +10,9 @@ export function initPlayer(): void {
   const seek = get<HTMLInputElement>('#track-progress');
   const status = get<HTMLElement>('#player-feedback');
   const remaining = get<HTMLElement>('#remaining-time');
+  const songTitle = document.getElementById('song-title');
   const length = 45;
-  const initialRemaining = 183;
-  let previewStart = 0;
+  const previewStart = 0;
   let previewEnd = length;
   let ready = false;
   let finished = false;
@@ -57,8 +57,7 @@ export function initPlayer(): void {
   }
   function configure(): void {
     if (!Number.isFinite(audio.duration) || audio.duration <= 0) return;
-    previewStart = Math.max(0, audio.duration - initialRemaining);
-    previewEnd = Math.min(audio.duration, previewStart + length);
+    previewEnd = Math.min(audio.duration, length);
     if (!ready) {
       ready = true;
       const requested = awaitingMetadata;
@@ -104,6 +103,7 @@ export function initPlayer(): void {
     const playing = !audio.paused && !audio.ended;
     if (playing) startProgressAnimation();
     else { stopProgressAnimation(); updateSeek(); }
+    songTitle?.classList.toggle('is-rumbling', playing);
     playButton.classList.toggle('is-playing', playing);
     headerButton.classList.toggle('is-playing', playing);
     playButton.setAttribute('aria-label', playing ? 'Pause song' : 'Play song');

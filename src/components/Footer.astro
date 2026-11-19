@@ -16,7 +16,9 @@ const anchor = (hash: string) => `${home ? "" : "/"}${hash}`;
     </div>
     <div class="footer-navs">
       <details class="footer-column" open><summary>Quick Links <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
-        <div class="footer-links-shell"><div class="footer-links"><a href={anchor("#home")}>Home</a><a href={anchor("#music")}>Music</a><a href={anchor("#shows")}>Live Shows</a>{home && <button type="button" data-coming-soon="Merchandise">Merchandise</button>}<a href={anchor("#band")}>About Us</a>{home && <button type="button" data-coming-soon="EPK">EPK</button>}</div></div>
+        <div class="footer-links-shell"><div class="footer-links"><a href={anchor("#home")}>Home</a><a href={anchor("#music")}>Music</a><a href={anchor("#shows")}>Live Shows</a>{home && <button type="button" data-coming-soon="Merchandise">Merchandise</button>}<a href={anchor("#band")}>About Us</a>{Astro.url.pathname.replace(/\/$/, '') === '/epk'
+          ? <a href="#top" aria-current="page">EPK</a>
+          : <a href="/epk/" target="_blank" rel="noopener noreferrer">EPK<span class="sr-only"> (opens in a new tab)</span></a>}</div></div>
       </details>
       <details class="footer-column" open><summary>Support <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary>
         <div class="footer-links-shell"><div class="footer-links"><a href="/purchase-terms/">Purchase Terms</a><a href="/privacy-policy/">Privacy Policy</a><a href="/terms-of-use/">Terms of Use</a><a href="/cookie-preferences/">Cookie Preferences</a></div></div>

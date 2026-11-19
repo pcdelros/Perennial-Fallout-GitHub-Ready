@@ -72,7 +72,8 @@ function initPhotoTextures(): void {
 }
 
 function initNewsletterTextures(): void {
-  const texture = get<HTMLElement>('#newsletter-texture-flicker');
+  const texture = document.querySelector<HTMLElement>('#newsletter-texture-flicker');
+  if (!texture) return;
   let visible = false, frame = 0;
   let interval: number | null = null;
   const sync = (): void => {

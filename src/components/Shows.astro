@@ -1,11 +1,20 @@
 ---
 import { siteConfig } from '../data/site';
+import Newsletter from './Newsletter.astro';
 const { shows } = siteConfig;
 ---
-<section class="shows textured" id="shows" aria-labelledby="shows-heading">
+<section class:list={["shows", "textured", { "shows-is-empty": shows.length === 0 }]} id="shows" aria-label="Live Shows">
   <div class="content-wrap shows-inner">
+    {shows.length === 0 ? (
+      <div class="shows-empty" aria-labelledby="shows-empty-heading">
+        <p class="shows-empty-label">Nothing on the calendar yet</p>
+        <h3 id="shows-empty-heading">NO SHOWS ANNOUNCED</h3>
+        <p class="shows-empty-desc">We’ll let you know when the next show is confirmed.</p>
+        <Newsletter variant="embedded" hideHeading={true} hideIntro={true} minimal={true} />
+      </div>
+    ) : (
+    <>
     <h2 class="section-heading" id="shows-heading">Live Shows</h2>
-    <p class="sr-only">Notify Me downloads a calendar reminder for the selected show. Dates are preview examples pending confirmation.</p>
     <div class="show-grid">
       {shows.map((show, index) => {
         const date = new Date(show.start);
@@ -23,5 +32,7 @@ const { shows } = siteConfig;
         </article>;
       })}
     </div>
+    </>
+    )}
   </div>
 </section>

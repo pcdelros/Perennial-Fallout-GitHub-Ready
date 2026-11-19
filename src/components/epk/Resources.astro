@@ -1,0 +1,27 @@
+---
+import content from '../../data/epk.json';
+import PressIcon from './PressIcon.astro';
+const downloads = [
+  { title: 'Band photo', format: 'WEBP', href: content.groupPhoto, filename: 'perennial-fallout-band.webp' },
+  { title: 'Band logo', format: 'SVG', href: '/assets/icons/logo.svg', filename: 'perennial-fallout-logo.svg' },
+  { title: 'Short biography', format: 'TXT', href: '/press/short-bio.txt' },
+  { title: 'Full biography', format: 'TXT', href: '/press/full-bio.txt' },
+  { title: 'Member biographies', format: 'TXT', href: '/press/member-bios.txt' },
+  { title: 'Printable press sheet', format: 'PDF', href: '/press/perennial-fallout-press-sheet.pdf' },
+];
+---
+<section class="press-resources-section press-panel press-parallax content-wrap" id="resources" aria-labelledby="resources-title">
+  <div class="press-resources-intro">
+    <div class="press-section-heading">
+      <span class="press-overline">04 / FOR THE PRESS</span>
+      <h2 id="resources-title">PRESS ASSETS</h2>
+      <p>Images, approved bios and a printable one-sheet for your coverage or event listing.</p>
+    </div>
+    <a class="pill pill-solid" href="/press/perennial-fallout-press-assets.zip" download>DOWNLOAD ALL ASSETS <span class="sr-only">(ZIP)</span></a>
+  </div>
+  <ul class="press-downloads">
+    {downloads.map(file => (
+      <li><a href={file.href} download={file.filename || true}><span>{file.title}</span><span class="press-format">{file.format}</span><PressIcon name="download" /></a></li>
+    ))}
+  </ul>
+</section>

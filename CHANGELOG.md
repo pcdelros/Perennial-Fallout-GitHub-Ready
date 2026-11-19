@@ -1,5 +1,62 @@
 # Changelog
 
+## v1.10.4 — EPK illustrated background restoration and desktop title
+
+- Restored the existing castle/ruins artwork in the EPK hero, replacing the grain-only override introduced in v1.10.3. The original image stays in the codebase and participates in the existing scroll-depth animation.
+- Kept the 1:1 band photo card and its pointer-driven 3D hover effect intact.
+- Removed the forced line break in the EPK heading. **PERENNIAL FALLOUT** displays on one line at desktop widths, with fluid font sizing to avoid column overflow.
+- Preserved the intentional two-line heading on mobile and the existing mobile hero layout.
+
+
+## v1.10.3 — EPK hero layout fix, balanced no-shows spacing, support-page audit
+
+- Fixed the EPK hero clipping at the source by removing its old fixed-height and flex shrink-to-fit constraints. A full-width responsive grid now lets the square band photo, heading, and **both CTAs** determine the hero height before the information bar.
+- Tuned the EPK hero background to a restrained black/burgundy grain treatment instead of the distracting gray imagery. Preserved the square image and 3D hover/parallax effects.
+- Set equal top and bottom section padding around the homepage **No Shows Announced** empty state (**96px desktop**, **76px mobile**).
+- Audited all four support pages and their navigation paths against the current code. Corrected Purchase Terms to say Buy Track opens the **Fourthwall shop homepage**, not a direct product listing; clarified that product availability and file formats depend on the Fourthwall listing.
+- Updated privacy, terms, and cookie wording to reflect **45-second previews, conditional Cloudflare D1/Turnstile/Resend setup, local preferences, and EPK locally hosted fonts**. Updated the support-page revision date.
+- Verified the layout with offline Chromium DOM measurements at **1650, 1200, 900, 768, 393 and 320px**. The EPK CTAs clear the following section, and the tested pages show no horizontal overflow. The full Astro build was not available in this environment.
+
+## v1.10.2 — SSFR homepage and EPK mobile fixes
+
+- Restored the **NEW SINGLE** eyebrow to its own line above **THE WAY** by returning the song title to block layout while preserving the subtle rumble effect during playback.
+- Simplified the Live Shows empty state by removing the decorative `shows-empty-mark` and hiding the **Live Shows** header when no confirmed dates exist, leaving only the empty-state copy and signup area.
+- Adjusted the EPK mobile hero so the square image card sits lower and remains fully in view more reliably.
+- Updated the EPK mobile **Meet The Band** behavior so all biographies are expanded automatically rather than using accordions.
+- Reworked the EPK parallax script to use the same delayed, eased trailing motion style as the homepage instead of immediate direct movement.
+- Cleaned up the mobile formatting of `press-info-bar textured press-parallax` into a stacked single-column summary layout.
+
+## v1.10.1 — EPK polish, homepage CTA cleanup and player motion
+
+- Removed the extra **Enter The Fallout** heading/copy block from the no-shows state. The embedded signup now shows only the form and consent text beneath the empty-state message.
+- Updated the homepage **Meet The Band** actions by removing **About Us** and making **View EPK** the primary button.
+- Increased the homepage hero artist name under **The Way** to **16px** and added a subtle rumble animation on the song title while the preview is actively playing.
+- Reworked the EPK hero away from the blown-out homepage crop. It now uses a square 1:1 band image card on a black stage with hover-based 3D tilt on desktop.
+- Added scroll-driven 3D/parallax background motion across the major EPK sections to better match the homepage’s depth and movement.
+- In the EPK **Meet The Band** section, member biographies now display fully expanded on desktop and remain accordion-based on mobile.
+
+## v1.10.0 — EPK redesign, updated preview and live-show empty state
+
+- Replaced the EPK-specific header with the same `Header.astro` navigation used on the homepage. Redesigned the EPK as a streamlined editorial press page, using the existing burgundy/black textures, typography, pills and photographic visual direction.
+- Updated Peter’s displayed homepage name to **PETE**, and kept the approved EPK name, biography and portrait aligned. Regenerated the PDF, downloadable bios and press ZIP to reflect Pete and the public booking contact.
+- Set booking and press inquiries to **perennialfallout@gmail.com**.
+- Updated BUY TRACK destinations on both pages to the Fourthwall store homepage.
+- Updated the homepage and EPK audio with the supplied new mix, preserving the original public **45-second preview** to avoid exposing the full recording.
+- Removed all three unverified sample concerts. Live Shows now has a dedicated no-dates state that includes Enter The Fallout signup. When shows are populated, the signup appears in its usual lower-page location instead. There is only one newsletter form on the homepage at a time.
+- Preserved the existing Cloudflare newsletter flow, download paths, mobile menu behavior, support pages, and homepage artwork.
+
+
+## v1.9.0 — Electronic press kit
+
+- Added the dedicated `/epk/` page with Peter Orillo’s approved biography, lineup, sound, mission, performance description and planned activities.
+- Connected the homepage desktop and mobile menus, View EPK action and footer Quick Links to the EPK in a new tab. The EPK links back to the homepage and its sections.
+- Added nine native disclosures, responsive portraits, locally served Metal Mania and Barlow on the EPK, share metadata, a native audio preview and the existing Fourthwall purchase destination.
+- Added a printable, one-page PDF, three plain-text biography downloads, the band logo and website-size group photo. The complete press ZIP also includes all five member portraits.
+- Replaced the full-length public MP3 with the same excerpt previously selected in the browser. Both players share the existing asset URL. The clip contains 45 seconds of decoded audio.
+- Updated the Windows launcher to let Astro open the browser after the server starts. The port, double-click workflow and first-run installation from the lockfile are preserved.
+
+Release notes, the file inventory and validation results are in [REVIEW-v1.9.0.md](./REVIEW-v1.9.0.md).
+
 ## v1.8.3 — Newsletter integration and Support pages
 
 - Added complete Purchase Terms, Privacy Policy, Terms of Use, and Cookie Preferences pages, linked from the existing footer.

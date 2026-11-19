@@ -1,19 +1,22 @@
 ---
 // Newsletter signup retains the original form and visual styling.
 // The public Turnstile site key is set as a Cloudflare Pages BUILD variable.
+interface Props { variant?: 'section' | 'embedded'; hideHeading?: boolean; hideIntro?: boolean; minimal?: boolean; }
+const { variant = 'section', hideHeading = false, hideIntro = false, minimal = false } = Astro.props;
+const embedded = variant === 'embedded';
 const turnstileSiteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY ?? '';
 ---
-<section class="newsletter textured" id="newsletter" aria-labelledby="newsletter-heading">
-  <div class="newsletter-texture-flicker" id="newsletter-texture-flicker" aria-hidden="true"></div>
-  <div class="newsletter-content content-wrap">
-    <h2 class="section-heading" id="newsletter-heading">Enter The Fallout</h2>
-    <p>Get first access to new music, upcoming shows,<br class="desktop-break"> exclusive merch, and band updates.</p>
+<section class:list={["newsletter", { textured: !embedded, "newsletter-embedded": embedded, "newsletter-minimal": minimal }]} id="newsletter" aria-labelledby={hideHeading ? undefined : "newsletter-heading"}>
+  {!embedded && <div class="newsletter-texture-flicker" id="newsletter-texture-flicker" aria-hidden="true"></div>}
+  <div class:list={["newsletter-content", { "content-wrap": !embedded }]}>
+    {!hideHeading && <h2 class="section-heading" id="newsletter-heading">Enter The Fallout</h2>}
+    {!hideIntro && <p>{embedded ? "Be first to hear about new dates, releases, and band updates." : "Get first access to new music, upcoming shows, exclusive merch, and band updates."}</p>}
     <form class="newsletter-form" id="newsletter-form" novalidate data-turnstile-enabled={turnstileSiteKey ? 'true' : 'false'}>
       <label class="sr-only" for="email">Email address</label>
       <input id="email" name="email" type="email" autocomplete="email" placeholder="Enter your email address" maxlength="254" required>
       <button class="pill pill-solid" type="submit">SUBSCRIBE</button>
       <input type="text" name="website" tabindex="-1" autocomplete="off" class="newsletter-honeypot" aria-hidden="true" />
-      {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="dark" data-appearance="interaction-only" data-action="newsletter_signup"></div>}
+      {turnstileSiteKey && <div class="cf-turnstile" data-sitekey={turnstileSiteKey} data-theme="dark" data-appearance="always" data-action="newsletter_signup"></div>}
     </form>
     <p id="newsletter-message" class="form-message" role="status" aria-live="polite"></p>
     <p class="newsletter-consent">By subscribing, you agree to receive email updates from Perennial Fallout. <a href="/privacy-policy/">Privacy notice</a>.</p>
