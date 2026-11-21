@@ -1,5 +1,22 @@
 # Changelog
 
+## v1.10.6 — unified live shows and edge-to-edge EPK textures
+
+- Removed the separate **Past Shows** section. All four dates remain in the **Live Shows** grid, with upcoming performances first and older dates following in reverse chronological order.
+- Replaced past-show action buttons with a visibly subdued, **non-interactive SHOW ENDED** status. Past events retain their dates, venues, times, and address links; no unsupplied ticket links are introduced.
+- Preserved date rollover by Phoenix calendar date, and kept only one newsletter form. The empty state is reserved for an entirely empty show list.
+- Extended the EPK About / Sound / Press Assets backdrop layers across the full viewport instead of clipping them to the centered content columns. Text and controls retain their previous content width, and parallax remains supported.
+- Kept the complete website package and Windows launcher, with updates to the README and validation notes.
+
+## v1.10.5 — confirmed dates and past shows archive
+
+- Added four performances provided by Pete: **The Blooze** on Nov 20 (10 PM), Oct 23 (11 PM), and Sep 26 (11 PM), and **The 44 Sports Grill** on Sep 19 (9 PM), all in 2026.
+- Added the supplied full venue addresses and working **Get Directions** Google Maps links, with no fabricated ticket-sale links or set lengths.
+- Added a distinct **Past Shows** archive that preserves completed dates without treating them as upcoming events. Upcoming shows are sorted chronologically and past shows reverse chronologically.
+- Added browser-side filtering by the **Phoenix, Arizona calendar date** so the Nov 20 show moves into Past Shows after that date passes, without requiring another deployment.
+- Kept a **single** newsletter signup form: it appears below Meet The Band when upcoming shows exist, or inside the **No Shows Announced** state when none remain.
+- Preserved the v1.10.4 EPK, hero, mobile styles, support pages, audio preview, and existing integrations.
+
 ## v1.10.4 — EPK illustrated background restoration and desktop title
 
 - Restored the existing castle/ruins artwork in the EPK hero, replacing the grain-only override introduced in v1.10.3. The original image stays in the codebase and participates in the existing scroll-depth animation.

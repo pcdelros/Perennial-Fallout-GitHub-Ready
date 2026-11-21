@@ -1,38 +1,54 @@
 ---
 import { siteConfig } from '../data/site';
-import Newsletter from './Newsletter.astro';
-const { shows } = siteConfig;
+
+// Store all supplied performances in one list. Client-side status changes are
+// based on the current calendar date in Phoenix, Arizona.
+const shows = [...siteConfig.shows].sort((a, b) => b.start.localeCompare(a.start));
+const directions = (address: string) => `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
+const formatDate = (date: string) => {
+  const [year, month, day] = date.split('-').map(Number);
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  return { year, month: months[month - 1], day };
+};
 ---
-<section class:list={["shows", "textured", { "shows-is-empty": shows.length === 0 }]} id="shows" aria-label="Live Shows">
+<section class="shows textured" id="shows" aria-label="Perennial Fallout live shows">
   <div class="content-wrap shows-inner">
-    {shows.length === 0 ? (
-      <div class="shows-empty" aria-labelledby="shows-empty-heading">
-        <p class="shows-empty-label">Nothing on the calendar yet</p>
-        <h3 id="shows-empty-heading">NO SHOWS ANNOUNCED</h3>
-        <p class="shows-empty-desc">We’ll let you know when the next show is confirmed.</p>
-        <Newsletter variant="embedded" hideHeading={true} hideIntro={true} minimal={true} />
+    <div class="shows-list" id="shows-list">
+      <h2 class="section-heading" id="shows-heading">Live Shows</h2>
+      <div class="show-grid" id="shows-grid">
+        {shows.map(show => {
+          const date = formatDate(show.date);
+          return (
+            <article class="show-card" data-show-date={show.date} data-show-start={show.start} data-show-venue={show.venue}>
+              <div class="show-content">
+                <time class="date-card" datetime={show.date} aria-label={`${date.month} ${date.day}, ${date.year}`}>
+                  <span>{date.month}</span><strong>{date.day}</strong><small>{date.year}</small>
+                </time>
+                <div class="show-meta">
+                  <p class="venue"><img src="/assets/icons/building-complex.svg" alt="" />{show.venue}</p>
+                  <p><img src="/assets/icons/clock-3.svg" alt="" />{show.time} · {show.city}</p>
+                  <p><img src="/assets/icons/map-pin.svg" alt="" /><a class="show-address" href={directions(show.address)} target="_blank" rel="noopener noreferrer" aria-label={`Map directions to ${show.venue}, ${show.address}`}>{show.address}</a></p>
+                </div>
+              </div>
+              <div class="show-actions">
+                <div class="show-upcoming-actions">
+                  <a class="pill pill-outline" href={directions(show.address)} target="_blank" rel="noopener noreferrer">Get Directions<span class="sr-only"> (opens Google Maps in a new tab)</span></a>
+                  {show.ticketsUrl && <a class="pill pill-solid" href={show.ticketsUrl} target="_blank" rel="noopener noreferrer">Tickets</a>}
+                  {show.end && <button class="pill pill-outline" type="button" data-remind={siteConfig.shows.indexOf(show)}>Add Reminder</button>}
+                </div>
+                <span class="show-ended-status" hidden>SHOW ENDED</span>
+              </div>
+            </article>
+          );
+        })}
       </div>
-    ) : (
-    <>
-    <h2 class="section-heading" id="shows-heading">Live Shows</h2>
-    <div class="show-grid">
-      {shows.map((show, index) => {
-        const date = new Date(show.start);
-        const month = new Intl.DateTimeFormat('en-US', { month: 'short', timeZone: 'America/Phoenix' }).format(date);
-        const day = new Intl.DateTimeFormat('en-US', { day: 'numeric', timeZone: 'America/Phoenix' }).format(date);
-        return <article class="show-card">
-          <div class="show-content"><time class="date-card" datetime={show.start.slice(0, 10)}><span>{month}</span><strong>{day}</strong></time>
-            <div class="show-meta">
-              <p class="venue"><img src="/assets/icons/building-complex.svg" alt="" />{show.venue}</p>
-              <p><img src="/assets/icons/map-pin.svg" alt="" />{show.city}</p>
-              <p><img src="/assets/icons/clock-3.svg" alt="" />{show.time}</p>
-            </div>
-          </div>
-          <div class="show-actions"><button class="pill pill-solid" type="button" data-tickets={index}>Tickets</button><button class="pill pill-outline" type="button" data-remind={index}>Notify Me</button></div>
-        </article>;
-      })}
     </div>
-    </>
-    )}
+
+    <div class="shows-empty" id="shows-empty" aria-labelledby="shows-empty-heading" hidden>
+      <p class="shows-empty-label">Nothing on the calendar yet</p>
+      <h3 id="shows-empty-heading">No Shows Announced</h3>
+      <p class="shows-empty-desc">We’ll let you know when the next show is confirmed.</p>
+      <div id="shows-newsletter-slot"></div>
+    </div>
   </div>
 </section>

@@ -1,0 +1,37 @@
+/* v1.10.6 — one Live Shows collection with ended-performance status. */
+.shows .shows-list[hidden], .shows .shows-empty[hidden] { display:none!important; }
+.shows #shows-list .show-grid[data-count="1"] { max-width:570px; }
+@media(min-width:761px){
+  .shows #shows-list .show-grid[data-count="2"],
+  .shows #shows-list .show-grid[data-count="4"] {grid-template-columns:repeat(2,minmax(0,1fr));max-width:1000px;}
+}
+.shows .show-actions .show-upcoming-actions { width:100%;display:flex;align-items:center;justify-content:center;gap:12px; }
+.shows .show-upcoming-actions[hidden],.shows .show-ended-status[hidden] {display:none!important}
+.shows .show-upcoming-actions .pill {flex:1 1 0;min-width:0;}
+.shows .show-card.is-past {background:rgba(17,8,13,.34);border-color:rgba(230,176,190,.14);}
+.shows .show-card.is-past .date-card {background:rgba(77,30,46,.52)!important;}
+.shows .show-card.is-past .show-meta .venue {color:#e9d9de;}
+.shows .show-ended-status {
+  display:flex;align-items:center;justify-content:center;min-height:44px;
+  width:100%;border:1px solid rgba(215,170,185,.24);border-radius:999px;
+  background:rgba(20,10,15,.3);font:700 14px/1.1 var(--body);letter-spacing:.11em;
+  color:#d4b9c1;cursor:default;user-select:none;
+}
+@media (max-width:760px){
+  .shows .show-grid {gap:20px!important;}
+}
+
+/* EPK content sections are centered, but their backdrop must bleed edge-to-edge.
+   The previous pseudo-element was clipped by the content-wrap's overflow:hidden. */
+.press-page main { overflow-x:clip; overflow-y:visible; }
+.press-page main .press-panel { overflow:visible; }
+.press-page main .press-panel::before {
+  inset:-48px auto -48px calc(50% - 50vw);
+  width:100vw;
+  background:url('/assets/textures/desktop-2.webp') center center / cover no-repeat;
+  opacity:.12;
+  transform-origin:center center;
+}
+@media print {
+  .press-page main .press-panel::before{display:none!important}
+}

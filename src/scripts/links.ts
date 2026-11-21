@@ -47,18 +47,18 @@ function utcStamp(input: string): string | null {
 }
 /** Downloads a local .ics with a reminder. No permissions or calendar API required. */
 function downloadCalendar(show: Show, index: number): boolean {
-  const start = utcStamp(show.start), end = utcStamp(show.end);
+  const start = utcStamp(show.start), end = show.end ? utcStamp(show.end) : null;
   if (!start || !end) return false;
   const lines = [
     'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Perennial Fallout//Website Reminder 1.5//EN',
     'CALSCALE:GREGORIAN', 'METHOD:PUBLISH', 'BEGIN:VEVENT',
     `UID:pf-preview-${index}-${start}@perennial-fallout-local`,
     `DTSTAMP:${utcStamp(new Date().toISOString())}`, `DTSTART:${start}`, `DTEND:${end}`,
-    `SUMMARY:${escapeCalendar(`Perennial Fallout — ${show.venue} (VERIFY DATE)`)}`,
-    `LOCATION:${escapeCalendar(`${show.venue}, ${show.city}`)}`,
-    'DESCRIPTION:Demo show details. Verify the date before relying on this reminder.',
+    `SUMMARY:${escapeCalendar(`Perennial Fallout — ${show.venue}`)}`,
+    `LOCATION:${escapeCalendar(`${show.venue}, ${show.address}`)}`,
+    'DESCRIPTION:Live show information provided by Perennial Fallout.',
     'BEGIN:VALARM', 'TRIGGER:-P1D', 'ACTION:DISPLAY',
-    'DESCRIPTION:Perennial Fallout show tomorrow (verify preview date)', 'END:VALARM',
+    'DESCRIPTION:Perennial Fallout show tomorrow', 'END:VALARM',
     'END:VEVENT', 'END:VCALENDAR'
   ];
   const folded = lines.map(line => (line.match(/.{1,70}/gu) ?? []).join('\r\n ')).join('\r\n') + '\r\n';

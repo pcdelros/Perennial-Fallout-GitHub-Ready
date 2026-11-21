@@ -1,0 +1,60 @@
+/* v1.10.5 — actual show dates and a distinct, dated Past Shows archive.
+   The original homepage design system, textures and responsive spacing remain. */
+.shows .shows-inner{padding:96px 0}
+.shows .show-grid{align-items:stretch}
+.shows .show-grid[data-count="1"]{grid-template-columns:minmax(0,570px);justify-content:center;max-width:570px}
+.shows .show-card{width:100%;max-width:100%;min-width:0;justify-self:stretch;gap:22px;padding:22px 20px;border:1px solid rgba(211,102,130,.19);border-radius:8px;background:linear-gradient(135deg,rgba(45,12,25,.47),rgba(23,8,14,.25));}
+.shows .show-content{justify-content:flex-start;align-items:center;gap:20px}
+.shows .show-meta{min-width:0;flex:1}
+.shows .show-meta p{font-size:16px!important;white-space:normal;overflow-wrap:anywhere;line-height:1.42;letter-spacing:.035em}
+.shows .show-meta .venue{font-size:19px!important;line-height:1.35}
+.shows .date-card{height:92px;width:82px;flex:0 0 82px}
+.shows .date-card span,.shows .date-card strong{font-size:20px}
+.shows .date-card small{font:600 12px/1.1 var(--body);letter-spacing:.07em;margin-top:5px;color:#edd8df}
+.shows .show-address{text-decoration:underline;text-decoration-color:rgba(228,164,183,.35);text-underline-offset:3px;transition:color .2s ease,text-decoration-color .2s ease}
+.shows .show-address:hover{color:#ffe5eb;text-decoration-color:#f2b2c4}
+.shows .show-address:focus-visible{outline-offset:2px}
+.shows .show-actions{width:100%;justify-content:center}
+.shows .show-actions .pill{width:auto;flex:1 1 auto;max-width:100%;min-width:0}
+.shows .shows-past{margin-top:80px;padding-top:44px;border-top:1px solid rgba(255,255,255,.14)}
+.shows .shows-past-heading{font-size:clamp(29px,2.8vw,38px);margin-bottom:42px;color:#e9d1d8}
+.shows .shows-past-grid{gap:22px!important}
+.shows .shows-past-grid .show-card{background:rgba(17,8,13,.34);border-color:rgba(230,176,190,.12);padding:20px 16px;opacity:.93}
+.shows .shows-past-grid .show-actions{display:none}
+.shows .shows-past-grid .date-card{background:rgba(77,30,46,.52)!important}
+.shows .shows-past-grid .show-meta .venue{font-size:17px!important}
+.shows .shows-past-grid .show-meta p{font-size:15px!important}
+.shows .shows-past-grid .show-content{gap:14px}
+.shows .shows-past-grid .date-card{width:72px;height:84px;flex-basis:72px}
+.shows .shows-past-grid .date-card span,.shows .shows-past-grid .date-card strong{font-size:18px}
+/* Keep the exact single signup form and balanced padding after dates expire. */
+.shows.shows-is-empty .shows-inner{padding:96px 0}
+.shows.shows-is-empty .shows-empty{padding:0}
+.shows.shows-is-empty .newsletter-embedded.newsletter-minimal{margin-top:24px}
+.shows .shows-empty[hidden],.shows .shows-upcoming[hidden],.shows .shows-past[hidden]{display:none!important}
+.shows #newsletter-heading[hidden],.shows .newsletter-content > p[hidden]{display:none!important}
+#home-newsletter-slot:empty{display:none}
+@media(max-width:960px){
+  .shows .show-grid[data-count="1"]{max-width:570px}
+  .shows .shows-past-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:760px){
+  .shows .shows-inner,.shows.shows-is-empty .shows-inner{padding:76px 0}
+  .shows .show-grid[data-count="1"]{display:flex;max-width:520px}
+  .shows .show-card{padding:20px 16px}
+  .shows .show-content{gap:12px}
+  .shows .show-meta .venue{font-size:17px!important}
+  .shows .show-meta p{font-size:16px!important}
+  .shows .show-actions .pill{min-height:44px}
+  .shows .shows-past{margin-top:64px;padding-top:36px}
+  .shows .shows-past-grid{display:flex;flex-direction:column;gap:16px!important;max-width:520px}
+  .shows .shows-past-grid .show-card{padding:18px 14px;}
+  .shows .shows-past-heading{margin-bottom:28px}
+}
+@media(max-width:390px){
+  .shows .show-meta .venue{font-size:16px!important}
+  .shows .date-card{width:70px;height:82px;flex-basis:70px}
+  .shows .show-content{gap:10px}
+  .shows .show-card{padding:16px 12px}
+  .shows .shows-past-grid .date-card{width:66px;flex-basis:66px;height:78px}
+}

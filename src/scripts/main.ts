@@ -1,4 +1,5 @@
 import { initPlayer } from './player';
+import { initShows } from './shows';
 import { initNavigation } from './navigation';
 import { initLinks } from './links';
 import { initNewsletter } from './newsletter';
@@ -10,6 +11,7 @@ function init(): void {
   initNavigation();
   initLinks();
   initNewsletter();
+  initShows();
   initEffects();
   initAudioReactiveGlow();
 }

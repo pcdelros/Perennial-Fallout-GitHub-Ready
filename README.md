@@ -1,16 +1,20 @@
-# Perennial Fallout — Website v1.10.4
+# Perennial Fallout — Website v1.10.6
 
-Official band website built with Astro 7 and TypeScript. This release restores the EPK hero's illustrated castle background and keeps the full band name on one line at desktop widths. It retains the hero sizing, homepage spacing, and support-page improvements from v1.10.3.
+Official band website built with Astro 7 and TypeScript. This complete v1.10.6 package keeps all four band-supplied performances together under Live Shows, replaces actions for past dates with a non-clickable SHOW ENDED status, and restores edge-to-edge EPK content textures while preserving the existing 3D effect.
+
+## Full website package (not an overlay)
+
+This ZIP includes the **complete website**, all image/audio/font/press assets, Cloudflare Pages Functions, and `START_WEBSITE.bat`. Extract it into a fresh folder to test locally. For GitHub, copy the contents into the root of the existing Cloudflare-connected repository **without deleting the `.git` folder**. Do not upload only the ZIP file to the repository.
 
 ## Preview on Windows
 
-1. Install Node.js 22.23.4 or later with npm. Extract the full ZIP into a new folder.
+1. Extract this complete v1.10.6 ZIP to a new folder. Install Node.js 22.23.4 or later with npm if not already installed.
 2. Double-click `START_WEBSITE.bat` in the folder containing `package.json`. On the first run, keep the command window open while npm installs the locked dependencies. This step requires internet access.
 3. The browser opens the homepage at `http://127.0.0.1:4321/`. Select **View EPK** or visit `http://127.0.0.1:4321/epk/` directly.
 4. In Edge or Chrome, press **F12**, then **Ctrl+Shift+M**. Select **Responsive** and enter a width such as 320, 390, 768 or 1440. Try a biography, the audio preview and **Download EPK**.
 5. To stop the server, press **Ctrl+C** in the command window. If Windows asks whether to end the batch job, enter **Y**.
 
-The page includes an updated one-page PDF and a press ZIP. [REVIEW-v1.10.4.md](./REVIEW-v1.10.4.md) covers the changes and how to test them. The version history is in [CHANGELOG.md](./CHANGELOG.md).
+The page includes an updated one-page PDF and a press ZIP. [REVIEW-v1.10.6.md](./REVIEW-v1.10.6.md) covers the changes and how to test them. The version history is in [CHANGELOG.md](./CHANGELOG.md).
 
 ## Existing homepage integrations
 
@@ -32,7 +36,8 @@ The page includes an updated one-page PDF and a press ZIP. [REVIEW-v1.10.4.md](.
 - `functions/api/newsletter/` — Cloudflare Pages Functions
 - `server/newsletter.ts` — shared server-only email, verification and token helpers
 - `migrations/0001_subscribers.sql` — D1 schema, not executed until setup
-- `src/data/site.ts` — band and event content
+- `src/data/site.ts` — band and confirmed show content
+- `src/components/Shows.astro`, `src/scripts/shows.ts` — combined live show cards, ended-show status, and Arizona-date filtering
 - `public/assets/` — original image, audio, and texture assets
 
 ## Local setup
@@ -51,7 +56,16 @@ Launch the site with `npm run dev`, then open `http://127.0.0.1:4321`. The Astro
 
 ## Existing content and unfinished sales channels
 
-The site still includes placeholder actions for the band's planned external social and merchandise destinations. “The Way” links directly to Fourthwall; **the site itself does not process payments**. Make sure Fourthwall can accept orders and is correctly configured for payouts before inviting purchases. The sample show dates have been removed from `src/data/site.ts`. Only confirmed dates should be added to `siteConfig.shows`. While the list is empty, Live Shows displays an integrated Enter The Fallout signup instead of the separate bottom newsletter. When confirmed shows are added, the cards and the original bottom newsletter return automatically.
+The site still includes placeholder actions for the band's planned external social and merchandise destinations. “The Way” links directly to Fourthwall; **the site itself does not process payments**. Make sure Fourthwall can accept orders and is correctly configured for payouts before inviting purchases. The previous sample dates remain removed. Four performances supplied by the band are now stored in `siteConfig.shows`:
+
+| Date | Venue | Local time | Address |
+| --- | --- | --- | --- |
+| 2026-11-20 | The Blooze | 10:00 PM | 12014 N 32nd St, Phoenix, AZ 85028 |
+| 2026-10-23 | The Blooze | 11:00 PM | 12014 N 32nd St, Phoenix, AZ 85028 |
+| 2026-09-26 | The Blooze | 11:00 PM | 12014 N 32nd St, Phoenix, AZ 85028 |
+| 2026-09-19 | The 44 Sports Grill | 9:00 PM | 4494 W Peoria Ave, Glendale, AZ 85302 |
+
+All four dates remain together under **Live Shows**. Using **America/Phoenix** (Arizona), the browser displays upcoming shows first and completed dates after them. Past cards replace active actions with **SHOW ENDED** (a non-clickable label), while the address can still open Google Maps. Because no performance end times were supplied, a show becomes past on the **following Phoenix calendar date**. The separate **Past Shows** section has been removed. The newsletter remains in its usual location below Meet The Band as long as there is at least one date in the schedule, past or future. If the data has no dates at all, the single form appears in the No Shows Announced empty state. Ticket links appear only when a real `ticketsUrl` is supplied; none was provided for these shows.
 
 Footer support pages describe the current site's real practices rather than claiming checkout is already operational. The policies should be reviewed by the band's owner and, if needed, qualified counsel before going live, especially when future direct sales, shipping, analytics, or marketing are added.
 
@@ -59,7 +73,7 @@ Footer support pages describe the current site's real practices rather than clai
 
 After the band approves the local release, copy the package contents into the existing **Cloudflare-connected** GitHub repository, keeping its `.git/` folder. Commit and push to the production branch. Do not create a second Cloudflare project. Build command: `npm run build`. Output: `dist`. Framework preset: Astro. Keep the `functions/` directory in Git to deploy serverless APIs.
 
-The package deliberately **excludes** `node_modules`, `.git`, generated `dist/`, subscriber exports, and API secrets. The `START_WEBSITE.bat` is optional for local development, not used by Cloudflare. The original photos, audio track and other assets must be licensed/authorized for public use.
+This **complete package** includes the website assets and components but excludes `node_modules`, `.git`, generated `dist/`, subscriber exports, and API secrets. The `START_WEBSITE.bat` is optional for local development, not used by Cloudflare. The original photos, audio track and other assets must be licensed/authorized for public use.
 
 ## Safari / Turnstile troubleshooting
 
